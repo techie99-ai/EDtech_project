@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title>Learning Persona | Discover Your Learning Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo-container">
+                    <a href="#" class="logo" data-page="home">
+                        <div class="logo-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <span class="logo-text">LearningPersona</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="desktop-nav">
+                    <div class="nav-dropdown" data-dropdown="learner">
+                        <button class="dropdown-btn">
+                            For Learners
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="learner-dropdown">
+                            <a href="#" data-page="quiz">
+                                <i class="fas fa-question-circle"></i>Persona Quiz
+                            </a>
+                            <a href="#" data-page="courses" data-requires-auth="true">
+                                <i class="fas fa-book"></i>Open Courses
+                            </a>
+                            <a href="#" data-page="strategies" data-requires-auth="true">
+                                <i class="fas fa-lightbulb"></i>Learning Strategies
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-dropdown" data-dropdown="ld">
+                        <button class="dropdown-btn">
+                            For L&D Professionals
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="ld-dropdown">
+                            <a href="#" data-page="ld-dashboard" data-requires-auth="true">
+                                <i class="fas fa-chart-bar"></i>Persona Insights Dashboard
+                            </a>
+                            <a href="#" data-page="ld-reports" data-requires-auth="true">
+                                <i class="fas fa-file-alt"></i>Reports & Downloads
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="nav-link" data-page="about">About</a>
+                </div>
+                
+                <div class="auth-container">
+                    <!-- Login/Register buttons (shown when logged out) -->
+                    <div class="auth-buttons" id="auth-buttons">
+                        <a href="#" class="login-btn" data-page="login">Log in</a>
+                        <a href="#" class="signup-btn" data-page="register">Sign up</a>
+                    </div>
+                    
+                    <!-- User menu (shown when logged in) -->
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <a href="#" class="dashboard-link" data-page="dashboard">
+                            <i class="fas fa-th-large"></i> Dashboard
+                        </a>
+                        <div class="user-profile" id="profile-dropdown-trigger">
+                            <div class="avatar" id="user-avatar"></div>
+                            <span class="user-name" id="user-name"></span>
+                        </div>
+                        <button class="logout-btn" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="mobile-menu-btn">
+                    <button id="mobile-menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-container">
+                <button class="mobile-dropdown-btn" data-mobile-dropdown="learner-mobile">
+                    <span>For Learners</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                
+                <div class="mobile-dropdown-content" id="learner-mobile-content">
+                    <a href="#" data-page="quiz">Persona Quiz</a>
+                    <a href="#" data-page="courses" data-requires-auth="true">Open Courses</a>
+                    <a href="#" data-page="strategies" data-requires-auth="true">Learning Strategies</a>
+                </div>
+                
+                <button class="mobile-dropdown-btn" data-mobile-dropdown="ld-mobile">
+                    <span>For L&D Professionals</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                
+                <div class="mobile-dropdown-content" id="ld-mobile-content">
+                    <a href="#" data-page="ld-dashboard" data-requires-auth="true">Persona Insights Dashboard</a>
+                    <a href="#" data-page="ld-reports" data-requires-auth="true">Reports & Downloads</a>
+                </div>
+                
+                <a href="#" class="mobile-nav-link" data-page="about">About</a>
+                
+                <!-- Mobile Auth Section -->
+                <div class="mobile-auth" id="mobile-auth-buttons">
+                    <div class="mobile-auth-buttons">
+                        <a href="#" data-page="login" class="mobile-login-btn">Log in</a>
+                        <a href="#" data-page="register" class="mobile-signup-btn">Sign up</a>
+                    </div>
+                </div>
+                
+                <div class="mobile-user-menu" id="mobile-user-menu" style="display: none;">
+                    <div class="mobile-user-profile">
+                        <div class="mobile-avatar" id="mobile-avatar"></div>
+                        <div class="mobile-user-info">
+                            <div class="mobile-user-name" id="mobile-user-name"></div>
+                            <div class="mobile-user-email" id="mobile-user-email"></div>
+                        </div>
+                    </div>
+                    <a href="#" data-page="dashboard" class="mobile-menu-link">Dashboard</a>
+                    <a href="#" data-page="profile" class="mobile-menu-link">Profile</a>
+                    <a href="#" id="mobile-logout-btn" class="mobile-menu-link">Sign out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quiz-modal">
+        <div class="quiz-overlay"></div>
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <button class="quiz-close-btn" id="quiz-close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="quiz-content">
+                <!-- Progress Bar -->
+                <div class="quiz-progress-container">
+                    <div class="quiz-progress-bar" id="quiz-progress-bar"></div>
+                </div>
+                
+                <!-- Quiz Questions Container -->
+                <div class="quiz-questions" id="quiz-questions">
+                    <!-- Question 1 -->
+                    <div class="quiz-step" data-step="1">
+                        <h3 class="quiz-step-title">Question 1 of 5</h3>
+                        <h4 class="quiz-question">How do you prefer to learn new information?</h4>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="1">
+                                <span>Reading detailed materials and taking notes</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="2">
+                                <span>Watching videos or demonstrations</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="3">
+                                <span>Hands-on practice and experimentation</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q1" value="4">
+                                <span>Discussion and collaboration with others</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 2 -->
+                    <div class="quiz-step" data-step="2">
+                        <h3 class="quiz-step-title">Question 2 of 5</h3>
+                        <h4 class="quiz-question">What motivates you most to learn something new?</h4>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="1">
+                                <span>Personal interest and curiosity</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="2">
+                                <span>Career advancement or practical application</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="3">
+                                <span>Competition or achievement recognition</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q2" value="4">
+                                <span>Solving problems or helping others</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 3 -->
+                    <div class="quiz-step" data-step="3">
+                        <h3 class="quiz-step-title">Question 3 of 5</h3>
+                        <h4 class="quiz-question">How do you deal with learning challenges?</h4>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="1">
+                                <span>Break it down into smaller, manageable parts</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="2">
+                                <span>Seek help from mentors or experts</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="3">
+                                <span>Research multiple sources for different perspectives</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q3" value="4">
+                                <span>Take a break and return with fresh perspective</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 4 -->
+                    <div class="quiz-step" data-step="4">
+                        <h3 class="quiz-step-title">Question 4 of 5</h3>
+                        <h4 class="quiz-question">What's your preferred learning environment?</h4>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="1">
+                                <span>Quiet, organized space with minimal distractions</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="2">
+                                <span>Dynamic environment with background activity</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="3">
+                                <span>Collaborative setting with peers</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q4" value="4">
+                                <span>Flexible environment that changes based on task</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 5 -->
+                    <div class="quiz-step" data-step="5">
+                        <h3 class="quiz-step-title">Question 5 of 5</h3>
+                        <h4 class="quiz-question">How do you prefer to apply what you've learned?</h4>
+                        <div class="quiz-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="1">
+                                <span>Immediately in practical situations</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="2">
+                                <span>After thorough understanding and planning</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="3">
+                                <span>By teaching or explaining to others</span>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="q5" value="4">
+                                <span>Through creative projects or personal adaptations</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Page -->
+                    <div class="quiz-results" id="quiz-results">
+                        <div class="persona-icon">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <h3 class="results-heading">Your Learning Persona:</h3>
+                        <h4 class="persona-name">The Explorer</h4>
+                        
+                        <p class="persona-description">
+                            Explorers are curious, autonomous learners who thrive on discovering new ideas and connections. 
+                            You value flexibility and are motivated by personal interest and real-world application.
+                        </p>
+                        
+                        <div class="strengths-container">
+                            <h5>Your Learning Strengths:</h5>
+                            <ul class="strengths-list">
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Self-directed learning and independent research</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Finding connections between diverse topics</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Practical application of knowledge</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="signup-prompt" id="signup-prompt">
+                            <h5>Want to see your full profile?</h5>
+                            <p>Sign up to access your complete persona profile, personalized recommendations, and learning tools.</p>
+                            <div class="prompt-buttons">
+                                <button class="signup-prompt-btn" data-action="register">Sign Up</button>
+                                <button class="login-prompt-btn" data-action="login">Login</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-footer">
+                <div class="quiz-nav-buttons" id="quiz-nav-buttons">
+                    <button class="quiz-back-btn" id="quiz-back-btn">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="quiz-next-btn" id="quiz-next-btn">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <button class="quiz-close-results-btn" id="quiz-close-results-btn">
+                    <span>Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+        <!-- Home Page -->
+        <div class="page" id="home-page">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="container">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1>Discover Your Learning Persona</h1>
+                            <p>Understand how you learn best and unlock your full learning potential with personalized recommendations and strategies.</p>
+                            <div class="hero-buttons">
+                                <button class="primary-btn" id="take-quiz-btn">
+                                    <i class="fas fa-question-circle"></i>
+                                    Take the Persona Quiz
+                                </button>
+                                <a href="#" class="secondary-btn" data-page="about">
+                                    <i class="fas fa-info-circle"></i>
+                                    Learn More
+                                </a>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <div class="image-container">
+                                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Students learning together" />
+                                <div class="image-badge">
+                                    <span>7 Learning Personas</span>
+                                </div>
+                            </div>
+                            <div class="floating-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>How It Works</h2>
+                        <p>Our platform helps both individual learners and L&D professionals optimize learning experiences through personalized insights.</p>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <h3>Take the Quiz</h3>
+                            <p>Answer a few questions about how you prefer to learn and process information.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon secondary">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <h3>Discover Your Persona</h3>
+                            <p>Get matched with one of our 7 learning personas based on your unique preferences.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon accent">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <h3>Personalized Learning</h3>
+                            <p>Get tailored course recommendations and learning strategies that match your style.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cta-container">
+                        <button class="primary-btn" id="start-journey-btn">
+                            Start Your Learning Journey
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- L&D Professionals Section -->
+            <section class="ld-section">
+                <div class="container">
+                    <div class="ld-content">
+                        <div class="ld-text">
+                            <div class="section-badge">For L&D Professionals</div>
+                            <h2>Optimize Team Learning</h2>
+                            <p>Understand how your team members learn best and create tailored learning experiences that drive engagement and retention.</p>
+                            
+                            <ul class="benefits-list">
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>View persona distribution across departments</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Get personalized L&D recommendations</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Generate reports and actionable insights</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Improve learning ROI with targeted content</span>
+                                </li>
+                            </ul>
+                            
+                            <a href="#" class="secondary-btn accent" data-page="register">
+                                <i class="fas fa-chart-pie"></i>
+                                Create L&D Account
+                            </a>
+                        </div>
+                        
+                        <div class="ld-visual">
+                            <div class="chart-container">
+                                <h3>Team Persona Distribution</h3>
+                                <div class="chart-preview">
+                                    <div class="chart-bars">
+                                        <div class="chart-bar" style="height: 70%"></div>
+                                        <div class="chart-bar" style="height: 45%"></div>
+                                        <div class="chart-bar" style="height: 85%"></div>
+                                        <div class="chart-bar" style="height: 30%"></div>
+                                        <div class="chart-bar" style="height: 55%"></div>
+                                    </div>
+                                    <div class="chart-labels">
+                                        <div>Explorer</div>
+                                        <div>Connector</div>
+                                        <div>Thinker</div>
+                                        <div>Planner</div>
+                                        <div>Creator</div>
+                                    </div>
+                                    <div class="preview-badge">
+                                        <i class="fas fa-lock"></i> Preview
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Testimonials Section -->
+            <section class="testimonials-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>What Our Users Say</h2>
+                        <p>Hear from learners and L&D professionals who have transformed their learning experience.</p>
+                    </div>
+                    
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p>"Understanding my learning persona has completely changed how I approach new subjects. I'm learning faster and retaining more than ever."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">MS</div>
+                                <div class="author-info">
+                                    <div class="author-name">Michael S.</div>
+                                    <div class="author-role">Product Manager</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-card">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p>"As an L&D director, this platform has given me incredible insights into how our teams learn. We've seen a 40% increase in course completion."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar secondary">JW</div>
+                                <div class="author-info">
+                                    <div class="author-name">Jennifer W.</div>
+                                    <div class="author-role">L&D Director</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-card">
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p>"The personalized course recommendations are spot on! I've discovered learning resources I never would have found on my own."</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar accent">DT</div>
+                                <div class="author-info">
+                                    <div class="author-name">David T.</div>
+                                    <div class="author-role">Software Engineer</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Login Page -->
+        <div class="page" id="login-page">
+            <div class="auth-page">
+                <div class="auth-container">
+                    <div class="auth-form-container">
+                        <div class="auth-header">
+                            <h2>Welcome Back</h2>
+                            <p>Sign in to access your learning dashboard</p>
+                        </div>
+                        
+                        <form id="login-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="login-email">Email address</label>
+                                <input type="email" id="login-email" placeholder="your@email.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="password-label">
+                                    <label for="login-password">Password</label>
+                                    <a href="#" class="forgot-password">Forgot password?</a>
+                                </div>
+                                <input type="password" id="login-password" placeholder="••••••••" required>
+                            </div>
+                            
+                            <button type="submit" class="auth-submit-btn">Sign in</button>
+                        </form>
+                        
+                        <div class="auth-footer">
+                            Don't have an account?
+                            <a href="#" data-page="register" class="auth-link">Sign up</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div class="page" id="register-page">
+            <div class="auth-page">
+                <div class="auth-container">
+                    <div class="auth-form-container">
+                        <div class="auth-header">
+                            <h2>Create Your Account</h2>
+                            <p>Join and discover your learning persona</p>
+                        </div>
+                        
+                        <form id="register-form" class="auth-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="register-first-name">First name</label>
+                                    <input type="text" id="register-first-name" placeholder="First name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="register-last-name">Last name</label>
+                                    <input type="text" id="register-last-name" placeholder="Last name" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-email">Email address</label>
+                                <input type="email" id="register-email" placeholder="your@email.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-password">Password</label>
+                                <input type="password" id="register-password" placeholder="Create a password" required>
+                                <p class="password-hint">Must be at least 8 characters</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" required>
+                                    <span>
+                                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="auth-submit-btn">Create account</button>
+                        </form>
+                        
+                        <div class="auth-footer">
+                            Already have an account?
+                            <a href="#" data-page="login" class="auth-link">Sign in</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div class="page" id="dashboard-page">
+            <div class="dashboard">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <div class="banner-content">
+                        <div class="banner-text">
+                            <h1 id="welcome-heading">Welcome back</h1>
+                            <p>Your learning journey continues. Here's what's new for you today.</p>
+                            <div class="stats-badges">
+                                <div class="stat-badge">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="user-streak">0</div>
+                                        <div class="stat-label">Day Streak</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-badge">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-value" id="completed-courses">0</div>
+                                        <div class="stat-label">Courses Completed</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-circle-container">
+                            <div class="progress-circle" id="progress-circle">
+                                <svg width="100" height="100" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="#E2E8F0" stroke-width="10" />
+                                    <circle id="progress-circle-value" cx="50" cy="50" r="45" fill="none" stroke="#4361EE" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="99" />
+                                </svg>
+                                <div class="progress-text" id="progress-text">65%</div>
+                            </div>
+                            <div class="progress-badge">
+                                <i class="fas fa-arrow-up"></i>5%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- Main Content -->
+                    <div class="dashboard-main">
+                        <!-- Learning Journey -->
+                        <div class="dashboard-card journey-card">
+                            <div class="card-header">
+                                <h2>Your Learning Journey</h2>
+                                <a href="#" class="view-all">
+                                    View all <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                            
+                            <div class="card-content">
+                                <!-- Current Course -->
+                                <div class="current-course">
+                                    <div class="course-status">In Progress</div>
+                                    <h3>Advanced Data Analysis with Python</h3>
+                                    <p class="course-progress-text">4 of 8 modules completed</p>
+                                    
+                                    <div class="progress-bar">
+                                        <div class="progress-value" style="width: 50%"></div>
+                                    </div>
+                                    
+                                    <div class="course-footer">
+                                        <span class="progress-percentage">50% complete</span>
+                                        <a href="#" class="continue-btn">Continue <i class="fas fa-play"></i></a>
+                                    </div>
+                                </div>
+                                
+                                <!-- Timeline -->
+                                <div class="learning-timeline">
+                                    <div class="timeline-item">
+                                        <h4>Completed "Introduction to Machine Learning"</h4>
+                                        <p>3 days ago</p>
+                                    </div>
+                                    
+                                    <div class="timeline-item">
+                                        <h4>Started "Advanced Data Analysis with Python"</h4>
+                                        <p>1 week ago</p>
+                                    </div>
+                                    
+                                    <div class="timeline-item">
+                                        <h4>Earned "Data Foundations" badge</h4>
+                                        <p>2 weeks ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recommended Courses -->
+                        <div class="dashboard-card courses-card">
+                            <div class="card-header">
+                                <h2>Recommended for You</h2>
+                                <div class="carousel-controls">
+                                    <button class="carousel-btn prev">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <button class="carousel-btn next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="card-content">
+                                <div class="courses-carousel" id="courses-carousel">
+                                    <!-- Course Card 1 -->
+                                    <div class="course-card">
+                                        <div class="course-image">
+                                            <img src="https://images.unsplash.com/photo-1526378722484-bd91ca387e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Data Science" />
+                                        </div>
+                                        <div class="course-details">
+                                            <div class="course-meta">
+                                                <span class="course-category">Data Science</span>
+                                                <span class="course-duration">8 hours</span>
+                                            </div>
+                                            <h3 class="course-title">Data Visualization Mastery</h3>
+                                            <p class="course-description">Learn to create impactful data stories</p>
+                                            <div class="course-footer">
+                                                <span class="course-instructor">
+                                                    <i class="fas fa-user-circle"></i>
+                                                    Sarah Chen
+                                                </span>
+                                                <span class="course-rating">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Course Card 2 -->
+                                    <div class="course-card">
+                                        <div class="course-image">
+                                            <img src="https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Leadership" />
+                                        </div>
+                                        <div class="course-details">
+                                            <div class="course-meta">
+                                                <span class="course-category secondary">Leadership</span>
+                                                <span class="course-duration">6 hours</span>
+                                            </div>
+                                            <h3 class="course-title">Strategic Leadership</h3>
+                                            <p class="course-description">Leading teams through challenges</p>
+                                            <div class="course-footer">
+                                                <span class="course-instructor">
+                                                    <i class="fas fa-user-circle"></i>
+                                                    Mark Johnson
+                                                </span>
+                                                <span class="course-rating">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="far fa-star"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Course Card 3 -->
+                                    <div class="course-card">
+                                        <div class="course-image">
+                                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Programming" />
+                                        </div>
+                                        <div class="course-details">
+                                            <div class="course-meta">
+                                                <span class="course-category accent">Programming</span>
+                                                <span class="course-duration">10 hours</span>
+                                            </div>
+                                            <h3 class="course-title">Advanced JavaScript Patterns</h3>
+                                            <p class="course-description">Modern coding techniques</p>
+                                            <div class="course-footer">
+                                                <span class="course-instructor">
+                                                    <i class="fas fa-user-circle"></i>
+                                                    David Park
+                                                </span>
+                                                <span class="course-rating">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar -->
+                    <div class="dashboard-sidebar">
+                        <!-- Persona Card -->
+                        <div class="dashboard-card persona-card">
+                            <h2>Your Learning Persona</h2>
+                            
+                            <div class="persona-header">
+                                <div class="persona-icon">
+                                    <i class="fas fa-mountain"></i>
+                                </div>
+                                <div class="persona-title">
+                                    <h3 id="user-persona-name">The Explorer</h3>
+                                    <p>Curious, adaptable, hands-on learner</p>
+                                </div>
+                            </div>
+                            
+                            <div class="persona-details">
+                                <div class="persona-section">
+                                    <h4>Your Key Strengths</h4>
+                                    <div class="persona-tags">
+                                        <span class="persona-tag">Self-directed</span>
+                                        <span class="persona-tag">Adaptable</span>
+                                        <span class="persona-tag">Practical</span>
+                                        <span class="persona-tag">Curious</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="persona-section">
+                                    <h4>Growth Areas</h4>
+                                    <div class="persona-tags">
+                                        <span class="persona-tag neutral">Structured planning</span>
+                                        <span class="persona-tag neutral">Long-term focus</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="persona-profile-link">
+                                View Full Persona Profile
+                            </a>
+                        </div>
+                        
+                        <!-- Skill Map -->
+                        <div class="dashboard-card skill-map-card">
+                            <div class="card-header">
+                                <h2>Your Skill Map</h2>
+                                <button class="options-btn">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="skill-map-container" id="skill-map-container">
+                                <!-- Skill map will be rendered by JavaScript -->
+                            </div>
+                            
+                            <a href="#" class="update-skills-btn">
+                                Update Skills
+                            </a>
+                        </div>
+                        
+                        <!-- Learning Streaks -->
+                        <div class="dashboard-card streaks-card">
+                            <h2>Your Learning Streak</h2>
+                            
+                            <div class="streak-calendar" id="streak-calendar">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                            
+                            <div class="current-streak">
+                                <div class="streak-label">Current Streak</div>
+                                <div class="streak-value">
+                                    <span id="streak-value">12</span>
+                                    <span class="streak-unit">days</span>
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- L&D Dashboard Page -->
+        <div class="page" id="ld-dashboard-page">
+            <div class="dashboard ld-dashboard">
+                <!-- Header -->
+                <div class="dashboard-header">
+                    <h1>L&D Insights Dashboard</h1>
+                    <p>Monitor learning persona distribution and optimize training strategies for your team.</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- Main Content -->
+                    <div class="dashboard-main">
+                        <!-- Department Breakdown -->
+                        <div class="dashboard-card department-card">
+                            <div class="card-header">
+                                <h2>Persona Distribution by Department</h2>
+                                <select id="department-filter" class="department-select">
+                                    <option>All Departments</option>
+                                    <option>Marketing</option>
+                                    <option>Engineering</option>
+                                    <option>Sales</option>
+                                    <option>Product</option>
+                                    <option>Customer Support</option>
+                                </select>
+                            </div>
+                            
+                            <div class="card-content">
+                                <div class="department-chart" id="department-chart">
+                                    <!-- Chart will be rendered by JavaScript -->
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer">
+                                <button class="export-btn">
+                                    <i class="fas fa-download"></i> Export Report
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Learning Effectiveness -->
+                        <div class="dashboard-card effectiveness-card">
+                            <div class="card-header">
+                                <h2>Learning Effectiveness by Persona</h2>
+                                <select id="time-filter" class="time-select">
+                                    <option>Last 6 Months</option>
+                                    <option>Last 3 Months</option>
+                                    <option>Last Month</option>
+                                    <option>All Time</option>
+                                </select>
+                            </div>
+                            
+                            <div class="card-content">
+                                <div class="effectiveness-stats">
+                                    <div class="stat-box">
+                                        <div class="stat-value">86%</div>
+                                        <div class="stat-label">Course Completion</div>
+                                    </div>
+                                    
+                                    <div class="stat-box">
+                                        <div class="stat-value">4.2</div>
+                                        <div class="stat-label">Avg. Rating</div>
+                                    </div>
+                                    
+                                    <div class="stat-box">
+                                        <div class="stat-value">12.5</div>
+                                        <div class="stat-label">Hours/Month</div>
+                                    </div>
+                                    
+                                    <div class="stat-box">
+                                        <div class="stat-value">73%</div>
+                                        <div class="stat-label">Skill Application</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="effectiveness-chart" id="effectiveness-chart">
+                                    <!-- Chart will be rendered by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar -->
+                    <div class="dashboard-sidebar">
+                        <!-- Quick Actions -->
+                        <div class="dashboard-card actions-card">
+                            <h2>Quick Actions</h2>
+                            
+                            <div class="quick-actions">
+                                <a href="#" class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-file-import"></i>
+                                    </div>
+                                    <div class="action-text">
+                                        <h3>Upload Employee Data</h3>
+                                        <p>Import CSV or Excel files</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="#" class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="action-text">
+                                        <h3>Generate PDF Report</h3>
+                                        <p>Full analysis with recommendations</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="#" class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="action-text">
+                                        <h3>Invite Team Members</h3>
+                                        <p>Send bulk quiz invitations</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Learning Recommendations -->
+                        <div class="dashboard-card recommendations-card">
+                            <h2>Learning Recommendations</h2>
+                            
+                            <div class="persona-recommendations">
+                                <div class="recommendation-group">
+                                    <h3>For Explorers (35% of team)</h3>
+                                    <ul class="recommendation-list">
+                                        <li>
+                                            <i class="fas fa-check"></i>
+                                            <span>Provide self-directed learning paths</span>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-check"></i>
+                                            <span>Include hands-on projects and challenges</span>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-check"></i>
+                                            <span>Offer variety in learning materials</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="recommendation-group">
+                                    <h3>For Thinkers (28% of team)</h3>
+                                    <ul class="recommendation-list">
+                                        <li>
+                                            <i class="fas fa-check"></i>
+                                            <span>Provide in-depth materials with research</span>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-check"></i>
+                                            <span>Allow time for analysis and reflection</span>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-check"></i>
+                                            <span>Include detailed case studies</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <button class="view-all-btn">
+                                View All Recommendations
+                            </button>
+                        </div>
+                        
+                        <!-- Upcoming Quiz Dates -->
+                        <div class="dashboard-card pending-card">
+                            <h2>Pending Assessments</h2>
+                            
+                            <div class="pending-assessments">
+                                <div class="assessment-item">
+                                    <div class="assessment-info">
+                                        <h3>Engineering Team</h3>
+                                        <p>15 members pending</p>
+                                    </div>
+                                    <button class="remind-btn">
+                                        Remind
+                                    </button>
+                                </div>
+                                
+                                <div class="assessment-item">
+                                    <div class="assessment-info">
+                                        <h3>New Hires - June</h3>
+                                        <p>8 members pending</p>
+                                    </div>
+                                    <button class="remind-btn">
+                                        Remind
+                                    </button>
+                                </div>
+                                
+                                <div class="assessment-item">
+                                    <div class="assessment-info">
+                                        <h3>Customer Support</h3>
+                                        <p>3 members pending</p>
+                                    </div>
+                                    <button class="remind-btn">
+                                        Remind
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <span class="footer-logo-text">LearningPersona</span>
+                    </div>
+                    <p>Discover your unique learning style and unlock your full potential.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>For Learners</h3>
+                    <ul>
+                        <li><a href="#" id="footer-quiz-btn">Take the Quiz</a></li>
+                        <li><a href="#" data-page="strategies">Learning Strategies</a></li>
+                        <li><a href="#" data-page="courses">Open Courses</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>For Organizations</h3>
+                    <ul>
+                        <li><a href="#" data-page="ld-dashboard">L&D Solutions</a></li>
+                        <li><a href="#">Team Assessments</a></li>
+                        <li><a href="#">Enterprise Plans</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#" data-page="about">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 LearningPersona. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
