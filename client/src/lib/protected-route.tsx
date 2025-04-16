@@ -5,9 +5,10 @@ import { Redirect, Route } from "wouter";
 interface ProtectedRouteProps {
   path: string;
   component: React.ComponentType;
+  role?: string; // Optional role requirement
 }
 
-export function ProtectedRoute({ path, component: Component }: ProtectedRouteProps) {
+export function ProtectedRoute({ path, component: Component, role }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -24,6 +25,15 @@ export function ProtectedRoute({ path, component: Component }: ProtectedRoutePro
     return (
       <Route path={path}>
         <Redirect to="/auth" />
+      </Route>
+    );
+  }
+
+  // If role is specified, check if user has that role
+  if (role && user.role !== role) {
+    return (
+      <Route path={path}>
+        <Redirect to={user.role === "l&d_professional" ? "/ld-dashboard" : "/dashboard"} />
       </Route>
     );
   }

@@ -6,6 +6,7 @@ import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { PersonaRadarChart } from "@/components/ui/radar-chart";
 import { 
   Home, 
   BookOpen, 
@@ -31,9 +32,8 @@ export default function DashboardPage() {
     return null;
   }
 
-  // Define navigation items for learner dashboard
+  // Define navigation items for learner dashboard - conditional based on role
   const navItems = [
-    { name: "Home", url: "/", icon: Home },
     { name: "Courses", url: "/courses", icon: BookOpen },
     { name: "Strategies", url: "/strategies", icon: Lightbulb },
     { name: "Dashboard", url: "/dashboard", icon: Trophy },
@@ -221,34 +221,42 @@ export default function DashboardPage() {
                     
                     <div>
                       <h3 className="text-lg font-medium mb-3">Learning Effectiveness</h3>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm">Visual learning</span>
-                            <span className="text-sm font-medium">92%</span>
-                          </div>
-                          <Progress value={92} className="h-2" />
+                      <div className="flex justify-center">
+                        <PersonaRadarChart 
+                          data={[
+                            { subject: 'Visual', value: 92, fullMark: 100 },
+                            { subject: 'Auditory', value: 45, fullMark: 100 },
+                            { subject: 'Kinesthetic', value: 78, fullMark: 100 },
+                            { subject: 'Reading', value: 65, fullMark: 100 },
+                            { subject: 'Analytical', value: 83, fullMark: 100 },
+                          ]}
+                          colors={{
+                            areaFill: 'rgba(94, 96, 206, 0.2)',
+                            areaStroke: '#5E60CE',
+                            gridStroke: 'var(--border)'
+                          }}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 mt-4">
+                        <div className="flex items-center gap-2">
+                          <div className="h-3 w-3 rounded-full bg-primary/80"></div>
+                          <span className="text-sm">Visual: 92%</span>
                         </div>
-                        <div>
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm">Auditory learning</span>
-                            <span className="text-sm font-medium">45%</span>
-                          </div>
-                          <Progress value={45} className="h-2" />
+                        <div className="flex items-center gap-2">
+                          <div className="h-3 w-3 rounded-full bg-primary/80"></div>
+                          <span className="text-sm">Auditory: 45%</span>
                         </div>
-                        <div>
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm">Kinesthetic learning</span>
-                            <span className="text-sm font-medium">78%</span>
-                          </div>
-                          <Progress value={78} className="h-2" />
+                        <div className="flex items-center gap-2">
+                          <div className="h-3 w-3 rounded-full bg-primary/80"></div>
+                          <span className="text-sm">Kinesthetic: 78%</span>
                         </div>
-                        <div>
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm">Reading/Writing</span>
-                            <span className="text-sm font-medium">65%</span>
-                          </div>
-                          <Progress value={65} className="h-2" />
+                        <div className="flex items-center gap-2">
+                          <div className="h-3 w-3 rounded-full bg-primary/80"></div>
+                          <span className="text-sm">Reading: 65%</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="h-3 w-3 rounded-full bg-primary/80"></div>
+                          <span className="text-sm">Analytical: 83%</span>
                         </div>
                       </div>
                     </div>

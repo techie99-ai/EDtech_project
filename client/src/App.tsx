@@ -25,11 +25,18 @@ function Router() {
       <Route path="/courses" component={CoursesPage} />
       <Route path="/strategies" component={StrategiesPage} />
       
-      {/* Protected routes */}
-      <ProtectedRoute path="/dashboard" component={DashboardPage} />
+      {/* Learner protected routes */}
+      <ProtectedRoute path="/dashboard" component={DashboardPage} role="learner" />
       <ProtectedRoute path="/quiz" component={QuizPage} />
+      
+      {/* L&D Professional protected routes */}
+      <ProtectedRoute path="/ld-dashboard" component={LDDashboardPage} role="l&d_professional" />
+      <ProtectedRoute path="/create-content" component={LDDashboardPage} role="l&d_professional" />
+      <ProtectedRoute path="/push-content" component={LDDashboardPage} role="l&d_professional" />
+      <ProtectedRoute path="/monitor" component={LDDashboardPage} role="l&d_professional" />
+      
+      {/* Common protected routes */}
       <ProtectedRoute path="/profile" component={ProfilePage} />
-      <ProtectedRoute path="/for-ld" component={LDDashboardPage} />
       
       {/* Fallback to 404 */}
       <Route component={NotFound} />
