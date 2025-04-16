@@ -22,7 +22,6 @@ export default function HomePage() {
 
   // Define navigation items for different user types
   const learnerNavItems = [
-    { name: "Home", url: "/", icon: Home },
     { name: "Courses", url: "/courses", icon: BookOpen },
     { name: "Strategies", url: "/strategies", icon: Lightbulb },
     { name: "Dashboard", url: "/dashboard", icon: Trophy },
@@ -30,10 +29,10 @@ export default function HomePage() {
   ];
 
   const ldNavItems = [
-    { name: "Home", url: "/", icon: Home },
-    { name: "Team View", url: "/for-ld", icon: BarChart },
-    { name: "Courses", url: "/courses", icon: BookOpen },
-    { name: "Strategies", url: "/strategies", icon: Lightbulb },
+    { name: "Overview", url: "/ld-dashboard", icon: BarChart },
+    { name: "Create Content", url: "/create-content", icon: BookOpen },
+    { name: "Push Content", url: "/push-content", icon: School },
+    { name: "Monitor", url: "/monitor", icon: Trophy },
     { name: "Profile", url: "/profile", icon: User }
   ];
 
@@ -42,7 +41,11 @@ export default function HomePage() {
   
   const handleTakeQuiz = () => {
     if (user) {
-      navigate("/quiz");
+      if (interfaceMode === "learner") {
+        navigate(user.role === "l&d_professional" ? "/ld-dashboard" : "/quiz");
+      } else {
+        navigate(user.role === "learner" ? "/dashboard" : "/ld-dashboard");
+      }
     } else {
       navigate("/auth");
     }

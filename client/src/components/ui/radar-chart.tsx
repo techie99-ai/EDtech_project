@@ -1,59 +1,57 @@
 import React from 'react';
 import {
-  Radar,
-  RadarChart,
+  RadarChart as RechartsRadarChart,
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
+  Radar,
   ResponsiveContainer,
+  Tooltip
 } from 'recharts';
-import { cn } from '@/lib/utils';
-
-type RadarDataPoint = {
-  subject: string;
-  value: number;
-  fullMark: number;
-};
 
 interface PersonaRadarChartProps {
-  data: RadarDataPoint[];
-  className?: string;
+  data: {
+    subject: string;
+    value: number;
+    fullMark: number;
+  }[];
   colors?: {
     areaFill?: string;
     areaStroke?: string;
     gridStroke?: string;
   };
+  width?: number;
+  height?: number;
 }
 
-export function PersonaRadarChart({
-  data,
-  className,
+export function PersonaRadarChart({ 
+  data, 
   colors = {
     areaFill: 'rgba(94, 96, 206, 0.2)',
     areaStroke: '#5E60CE',
-    gridStroke: '#e0e0e0',
+    gridStroke: '#ddd'
   },
+  width = 300,
+  height = 300
 }: PersonaRadarChartProps) {
   return (
-    <div className={cn("w-full h-[300px]", className)}>
-      <ResponsiveContainer width="100%" height="100%">
-        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-          <PolarGrid stroke={colors.gridStroke} />
-          <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--foreground)', fontSize: 12 }} />
-          <PolarRadiusAxis angle={90} domain={[0, 100]} tickCount={6} stroke="transparent" tick={{ fill: 'var(--muted-foreground)', fontSize: 10 }} />
-          <Radar
-            name="Skills"
-            dataKey="value"
-            stroke={colors.areaStroke}
-            fill={colors.areaFill}
-            fillOpacity={0.6}
-            strokeWidth={2}
-            dot={{ fill: colors.areaStroke, r: 4 }}
-            isAnimationActive={true}
-            animationDuration={1000}
-          />
-        </RadarChart>
-      </ResponsiveContainer>
-    </div>
+    <ResponsiveContainer width={width} height={height}>
+      <RechartsRadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+        <PolarGrid stroke={colors.gridStroke} />
+        <PolarAngleAxis dataKey="subject" />
+        <PolarRadiusAxis angle={30} domain={[0, 100]} />
+        <Radar
+          name="Persona Profile"
+          dataKey="value"
+          stroke={colors.areaStroke}
+          fill={colors.areaFill}
+          fillOpacity={0.6}
+        />
+        <Tooltip 
+          formatter={(value) => [`${value}%`, 'Score']} 
+          labelFormatter={(label) => `${label} Learning`}
+        />
+      </RechartsRadarChart>
+    </ResponsiveContainer>
   );
 }
