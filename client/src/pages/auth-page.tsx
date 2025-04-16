@@ -265,8 +265,23 @@ export default function AuthPage() {
         </div>
       </div>
 
-      <div className="hidden md:block bg-primary/10 p-8 flex items-center justify-center">
-        <div className="max-w-lg">
+      <div className="hidden md:block relative p-8 flex items-center justify-center overflow-hidden">
+        {/* Sparkles background */}
+        <div className="absolute inset-0 z-0">
+          <SparklesCore
+            id="auth-sparkles"
+            background="transparent"
+            minSize={0.6}
+            maxSize={1.4}
+            particleColor="#5E60CE"
+            particleDensity={70}
+            className="w-full h-full"
+            speed={0.8}
+          />
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10 max-w-lg bg-background/60 backdrop-blur-md p-8 rounded-lg shadow-lg border border-border">
           <h2 className="text-3xl font-bold mb-4">Discover Your Learning Persona</h2>
           <p className="text-lg mb-6">
             Unlock your full learning potential with personalized recommendations
