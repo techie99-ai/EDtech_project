@@ -62,7 +62,7 @@ export default function StrategiesPage() {
 
   // Get unique strategy types for filter
   const strategyTypes = strategies 
-    ? [...new Set(strategies.map(strategy => strategy.type))]
+    ? Array.from(new Set(strategies.map(strategy => strategy.type)))
     : [];
 
   return (
