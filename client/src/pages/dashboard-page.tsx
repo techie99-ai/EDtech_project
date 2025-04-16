@@ -1,544 +1,433 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useQuery } from "@tanstack/react-query";
-import { QuizResponse, Course, LearningStrategy } from "@shared/schema";
+import { useLocation, Link } from "wouter";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Link, useLocation } from "wouter";
-import { Calendar, BarChart4, BookOpen, TrendingUp, Award, Book, User } from "lucide-react";
-import { apiRequest } from "@/lib/queryClient";
+import { 
+  Home, 
+  BookOpen, 
+  Lightbulb, 
+  User, 
+  Trophy, 
+  BarChart, 
+  Brain, 
+  BookPlus, 
+  CalendarCheck, 
+  Puzzle, 
+  Video,
+  ArrowRight
+} from "lucide-react";
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("overview");
   const [, navigate] = useLocation();
 
-  useEffect(() => {
-    if (!user?.persona && user) {
-      // If user has no persona, suggest taking the quiz
-      setActiveTab("quiz");
-    }
-  }, [user]);
-
-  // Fetch quiz history
-  const { data: quizHistory, isLoading: isLoadingQuiz } = useQuery<QuizResponse[]>({
-    queryKey: ["/api/quiz/history"],
-    queryFn: async () => {
-      const res = await apiRequest("GET", "/api/quiz/history");
-      return await res.json();
-    },
-    enabled: !!user,
-  });
-
-  // Fetch recommended courses
-  const { data: recommendedCourses, isLoading: isLoadingCourses } = useQuery<Course[]>({
-    queryKey: ["/api/courses/recommended"],
-    queryFn: async () => {
-      const res = await apiRequest("GET", "/api/courses/recommended");
-      return await res.json();
-    },
-    enabled: !!user?.persona,
-  });
-
-  // Fetch recommended strategies
-  const { data: recommendedStrategies, isLoading: isLoadingStrategies } = useQuery<LearningStrategy[]>({
-    queryKey: ["/api/strategies/recommended"],
-    queryFn: async () => {
-      const res = await apiRequest("GET", "/api/strategies/recommended");
-      return await res.json();
-    },
-    enabled: !!user?.persona,
-  });
-
-  // Fetch user progress
-  const { data: userProgress, isLoading: isLoadingProgress } = useQuery({
-    queryKey: ["/api/progress"],
-    queryFn: async () => {
-      const res = await apiRequest("GET", "/api/progress");
-      return await res.json();
-    },
-    enabled: !!user,
-  });
-
+  // Redirect if not logged in
   if (!user) {
-    return null; // Protected route should handle redirect
+    navigate("/auth");
+    return null;
   }
+
+  // Define navigation items for learner dashboard
+  const navItems = [
+    { name: "Home", url: "/", icon: Home },
+    { name: "Courses", url: "/courses", icon: BookOpen },
+    { name: "Strategies", url: "/strategies", icon: Lightbulb },
+    { name: "Dashboard", url: "/dashboard", icon: Trophy },
+    { name: "Profile", url: "/profile", icon: User }
+  ];
+
+  // Sample persona data - in a real app, this would come from the user's quiz results
+  const personaData = {
+    primary: user.persona || "Visual Learner",
+    strengths: ["Visual pattern recognition", "Spatial awareness", "Creative thinking"],
+    improvement: ["Auditory learning", "Sequential processing"],
+    completedCourses: user.completedCourses || 3,
+    inProgressCourses: 2,
+    streakCount: user.streakCount || 5,
+    progress: 68,
+    certificates: 2,
+  };
+
+  // Sample recommended courses based on persona
+  const recommendedCourses = [
+    {
+      id: 1,
+      title: "Visual Learning Mastery",
+      description: "Perfect for visual learners. Learn techniques to maximize information retention through visual aids.",
+      duration: "4 weeks",
+      completionRate: 72,
+      tag: "Recommended for your persona"
+    },
+    {
+      id: 2,
+      title: "Auditory Learning Techniques",
+      description: "Strengthen your ability to learn through listening with these targeted exercises.",
+      duration: "3 weeks",
+      completionRate: 25,
+      tag: "Addresses improvement area"
+    },
+    {
+      id: 3,
+      title: "Comprehensive Learning Strategy",
+      description: "A holistic approach to learning that combines multiple modalities.",
+      duration: "6 weeks",
+      completionRate: 0,
+      tag: "New for you"
+    }
+  ];
+
+  // Sample streak data
+  const streakData = Array(30).fill(0).map((_, i) => {
+    if (i >= 30 - personaData.streakCount && i < 30) return 2; // Current streak
+    if (i % 3 === 0 || i % 7 === 0) return 1; // Past activity
+    return 0; // No activity
+  });
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header with navigation */}
-      <header className="border-b border-border">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-foreground">LearnPersona</h1>
+            <Brain className="h-6 w-6 text-primary" />
+            <h1 className="text-xl font-bold text-foreground">LearnPersona</h1>
           </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-foreground hover:text-primary transition-colors">
-              Home
-            </Link>
-            <Link href="/for-learners" className="text-foreground hover:text-primary transition-colors">
-              For Learners
-            </Link>
-            <Link href="/for-ld" className="text-foreground hover:text-primary transition-colors">
-              For L&D Professionals
-            </Link>
-            <Link href="/courses" className="text-foreground hover:text-primary transition-colors">
-              Courses
-            </Link>
-            <Link href="/strategies" className="text-foreground hover:text-primary transition-colors">
-              Strategies
-            </Link>
-            <Link href="/profile" className="text-foreground hover:text-primary transition-colors">
-              Profile
-            </Link>
-          </nav>
+          
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            
+            {user && (
+              <Link href="/profile">
+                <Button variant="outline" size="sm" className="ml-4">
+                  {user.name || user.username}
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 
-      {/* Main dashboard content */}
-      <main className="container mx-auto py-8 px-4">
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Sidebar */}
-          <aside className="w-full md:w-64 space-y-6">
-            <div className="bg-card rounded-lg shadow-sm p-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                  <User className="text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-medium">{user.name || user.username}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {user.persona ? user.persona : "No persona yet"}
-                  </p>
-                </div>
+      {/* Main Content */}
+      <main className="pt-20 pb-32 container mx-auto px-4">
+        <div className="max-w-6xl mx-auto">
+          {/* Welcome Section */}
+          <section className="mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Welcome back, {user.name || user.username}!</h1>
+                <p className="text-muted-foreground">
+                  Your learning persona: <span className="text-primary font-medium">{personaData.primary}</span>
+                </p>
               </div>
+              <Button onClick={() => navigate("/quiz")} variant="outline" className="flex items-center gap-2">
+                <Puzzle className="h-4 w-4" />
+                Retake Quiz
+              </Button>
             </div>
+          </section>
 
-            <div className="bg-card rounded-lg shadow-sm p-4">
-              <h3 className="font-medium mb-4">Navigation</h3>
-              <nav className="space-y-2">
-                <button
-                  onClick={() => setActiveTab("overview")}
-                  className={`w-full text-left px-3 py-2 rounded-md flex items-center space-x-3 transition-colors ${
-                    activeTab === "overview" ? "bg-primary/10 text-primary" : "hover:bg-muted"
-                  }`}
-                >
-                  <BarChart4 className="h-4 w-4" />
-                  <span>Overview</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("courses")}
-                  className={`w-full text-left px-3 py-2 rounded-md flex items-center space-x-3 transition-colors ${
-                    activeTab === "courses" ? "bg-primary/10 text-primary" : "hover:bg-muted"
-                  }`}
-                >
-                  <BookOpen className="h-4 w-4" />
-                  <span>Courses</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("strategies")}
-                  className={`w-full text-left px-3 py-2 rounded-md flex items-center space-x-3 transition-colors ${
-                    activeTab === "strategies" ? "bg-primary/10 text-primary" : "hover:bg-muted"
-                  }`}
-                >
-                  <TrendingUp className="h-4 w-4" />
-                  <span>Strategies</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("streaks")}
-                  className={`w-full text-left px-3 py-2 rounded-md flex items-center space-x-3 transition-colors ${
-                    activeTab === "streaks" ? "bg-primary/10 text-primary" : "hover:bg-muted"
-                  }`}
-                >
-                  <Calendar className="h-4 w-4" />
-                  <span>Streaks</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab("quiz")}
-                  className={`w-full text-left px-3 py-2 rounded-md flex items-center space-x-3 transition-colors ${
-                    activeTab === "quiz" ? "bg-primary/10 text-primary" : "hover:bg-muted"
-                  }`}
-                >
-                  <Award className="h-4 w-4" />
-                  <span>Learning Persona Quiz</span>
-                </button>
-              </nav>
-            </div>
-
-            {/* Learning streak */}
-            <div className="bg-card rounded-lg shadow-sm p-4">
-              <h3 className="font-medium mb-2">Your Learning Streak</h3>
-              <div className="flex items-center space-x-2">
-                <Calendar className="text-primary" />
-                <span className="text-2xl font-bold">{user.streakCount || 0}</span>
-                <span className="text-muted-foreground">days</span>
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                Keep learning daily to build your streak!
-              </p>
-            </div>
-          </aside>
-
-          {/* Main content */}
-          <div className="flex-1">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              {/* Overview Tab */}
-              <TabsContent value="overview" className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium">Courses Completed</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{user.completedCourses || 0}</div>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium">Current Streak</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{user.streakCount || 0} days</div>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium">Learning Persona</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">
-                        {user.persona || "Not Discovered"}
-                      </div>
-                    </CardContent>
-                  </Card>
+          {/* Stats Overview */}
+          <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                    <Trophy className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="text-2xl font-bold">{personaData.streakCount}</div>
+                  <p className="text-sm text-muted-foreground">Day Streak</p>
                 </div>
-
-                {!user.persona ? (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Discover Your Learning Persona</CardTitle>
-                      <CardDescription>
-                        Take our quiz to get personalized course recommendations and learning strategies.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardFooter>
-                      <Button onClick={() => setActiveTab("quiz")}>Take Quiz Now</Button>
-                    </CardFooter>
-                  </Card>
-                ) : (
-                  <>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Your Learning Journey</CardTitle>
-                        <CardDescription>
-                          Based on your persona: {user.persona}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          <div>
-                            <div className="flex justify-between text-sm mb-1">
-                              <span>Overall Progress</span>
-                              <span>{user.progress || 0}%</span>
-                            </div>
-                            <Progress value={user.progress || 0} className="h-2" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Recommended Courses</CardTitle>
-                          <CardDescription>
-                            Based on your learning persona
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          {isLoadingCourses ? (
-                            <p>Loading recommendations...</p>
-                          ) : recommendedCourses && recommendedCourses.length > 0 ? (
-                            <ul className="space-y-2">
-                              {recommendedCourses.slice(0, 3).map((course) => (
-                                <li key={course.id} className="flex items-start gap-2">
-                                  <BookOpen className="h-5 w-5 text-primary mt-0.5" />
-                                  <div>
-                                    <h4 className="font-medium">{course.title}</h4>
-                                    <p className="text-sm text-muted-foreground">
-                                      {course.description.substring(0, 60)}...
-                                    </p>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <p>No courses recommended yet.</p>
-                          )}
-                        </CardContent>
-                        <CardFooter>
-                          <Button variant="outline" onClick={() => setActiveTab("courses")}>
-                            View All Courses
-                          </Button>
-                        </CardFooter>
-                      </Card>
-
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Learning Strategies</CardTitle>
-                          <CardDescription>
-                            Techniques that work best for your persona
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          {isLoadingStrategies ? (
-                            <p>Loading strategies...</p>
-                          ) : recommendedStrategies && recommendedStrategies.length > 0 ? (
-                            <ul className="space-y-2">
-                              {recommendedStrategies.slice(0, 3).map((strategy) => (
-                                <li key={strategy.id} className="flex items-start gap-2">
-                                  <TrendingUp className="h-5 w-5 text-primary mt-0.5" />
-                                  <div>
-                                    <h4 className="font-medium">{strategy.title}</h4>
-                                    <p className="text-sm text-muted-foreground">
-                                      {strategy.description.substring(0, 60)}...
-                                    </p>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <p>No strategies recommended yet.</p>
-                          )}
-                        </CardContent>
-                        <CardFooter>
-                          <Button variant="outline" onClick={() => setActiveTab("strategies")}>
-                            View All Strategies
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    </div>
-                  </>
-                )}
-              </TabsContent>
-
-              {/* Courses Tab */}
-              <TabsContent value="courses" className="space-y-6">
-                <h2 className="text-2xl font-bold">Recommended Courses</h2>
-                {!user.persona ? (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Discover Your Learning Persona</CardTitle>
-                      <CardDescription>
-                        Take our quiz to get personalized course recommendations.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardFooter>
-                      <Button onClick={() => setActiveTab("quiz")}>Take Quiz Now</Button>
-                    </CardFooter>
-                  </Card>
-                ) : isLoadingCourses ? (
-                  <div className="flex items-center justify-center h-40">
-                    <p>Loading courses...</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                    <BookPlus className="h-6 w-6 text-primary" />
                   </div>
-                ) : recommendedCourses && recommendedCourses.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {recommendedCourses.map((course) => (
-                      <Card key={course.id}>
-                        <CardHeader>
-                          <CardTitle>{course.title}</CardTitle>
-                          <CardDescription>{course.provider}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-sm text-muted-foreground mb-4">
-                            {course.description}
-                          </p>
-                          <div className="flex items-center justify-between text-sm">
-                            <span>{course.difficulty}</span>
-                            <span>{course.duration}</span>
-                          </div>
-                        </CardContent>
-                        <CardFooter>
-                          <Button 
-                            variant="outline" 
-                            className="w-full"
-                            onClick={() => window.open(course.url, '_blank')}
-                          >
-                            View Course
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    ))}
+                  <div className="text-2xl font-bold">{personaData.completedCourses}</div>
+                  <p className="text-sm text-muted-foreground">Completed Courses</p>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                    <Video className="h-6 w-6 text-primary" />
                   </div>
-                ) : (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>No Courses Found</CardTitle>
-                      <CardDescription>
-                        We couldn't find any courses for your learning persona.
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                )}
-              </TabsContent>
+                  <div className="text-2xl font-bold">{personaData.inProgressCourses}</div>
+                  <p className="text-sm text-muted-foreground">In Progress</p>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                    <BarChart className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="text-2xl font-bold">{personaData.progress}%</div>
+                  <p className="text-sm text-muted-foreground">Overall Progress</p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
 
-              {/* Strategies Tab */}
-              <TabsContent value="strategies" className="space-y-6">
-                <h2 className="text-2xl font-bold">Learning Strategies</h2>
-                {!user.persona ? (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Discover Your Learning Persona</CardTitle>
-                      <CardDescription>
-                        Take our quiz to get personalized learning strategies.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardFooter>
-                      <Button onClick={() => setActiveTab("quiz")}>Take Quiz Now</Button>
-                    </CardFooter>
-                  </Card>
-                ) : isLoadingStrategies ? (
-                  <div className="flex items-center justify-center h-40">
-                    <p>Loading strategies...</p>
-                  </div>
-                ) : recommendedStrategies && recommendedStrategies.length > 0 ? (
+          {/* Main Dashboard Content */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column */}
+            <div className="col-span-2 space-y-8">
+              {/* Learning Persona Insights */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Your Learning Persona</CardTitle>
+                  <CardDescription>
+                    Understanding your unique learning style helps optimize your education journey
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
                   <div className="space-y-6">
-                    {recommendedStrategies.map((strategy) => (
-                      <Card key={strategy.id}>
-                        <CardHeader>
-                          <CardTitle>{strategy.title}</CardTitle>
-                          <CardDescription>{strategy.type}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-sm mb-4">{strategy.description}</p>
-                          <div className="bg-muted p-4 rounded-md">
-                            <h4 className="font-medium mb-2">How to apply this strategy:</h4>
-                            <p className="text-sm text-muted-foreground whitespace-pre-line">
-                              {strategy.content}
-                            </p>
+                    <div>
+                      <h3 className="text-lg font-medium mb-2">Key Strengths</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {personaData.strengths.map((strength, i) => (
+                          <div key={i} className="bg-primary/5 p-3 rounded-lg border border-primary/20 flex items-center gap-2">
+                            <div className="h-2 w-2 rounded-full bg-primary"></div>
+                            <span>{strength}</span>
                           </div>
-                        </CardContent>
-                      </Card>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-lg font-medium mb-2">Areas for Improvement</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {personaData.improvement.map((area, i) => (
+                          <div key={i} className="bg-muted p-3 rounded-lg border border-border flex items-center gap-2">
+                            <div className="h-2 w-2 rounded-full bg-muted-foreground"></div>
+                            <span>{area}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-lg font-medium mb-3">Learning Effectiveness</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm">Visual learning</span>
+                            <span className="text-sm font-medium">92%</span>
+                          </div>
+                          <Progress value={92} className="h-2" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm">Auditory learning</span>
+                            <span className="text-sm font-medium">45%</span>
+                          </div>
+                          <Progress value={45} className="h-2" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm">Kinesthetic learning</span>
+                            <span className="text-sm font-medium">78%</span>
+                          </div>
+                          <Progress value={78} className="h-2" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm">Reading/Writing</span>
+                            <span className="text-sm font-medium">65%</span>
+                          </div>
+                          <Progress value={65} className="h-2" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Link href="/strategies">
+                    <Button variant="outline" className="w-full sm:w-auto">View Recommended Strategies</Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+
+              {/* Recommended Courses */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recommended for You</CardTitle>
+                  <CardDescription>
+                    Courses selected based on your learning persona and interests
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {recommendedCourses.map((course) => (
+                      <div key={course.id} className="border rounded-lg p-4">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-medium">{course.title}</h3>
+                          <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
+                            {course.tag}
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3">{course.description}</p>
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center gap-4">
+                            <span className="text-xs text-muted-foreground">
+                              Duration: {course.duration}
+                            </span>
+                            {course.completionRate > 0 && (
+                              <div className="flex items-center gap-2">
+                                <Progress value={course.completionRate} className="h-2 w-24" />
+                                <span className="text-xs">{course.completionRate}%</span>
+                              </div>
+                            )}
+                          </div>
+                          <Button variant="ghost" size="sm" className="h-8">
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
                     ))}
                   </div>
-                ) : (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>No Strategies Found</CardTitle>
-                      <CardDescription>
-                        We couldn't find any learning strategies for your persona.
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                )}
-              </TabsContent>
+                </CardContent>
+                <CardFooter>
+                  <Link href="/courses">
+                    <Button variant="outline" className="w-full sm:w-auto">View All Courses</Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            </div>
 
-              {/* Streaks Tab */}
-              <TabsContent value="streaks" className="space-y-6">
-                <h2 className="text-2xl font-bold">Learning Streaks</h2>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Your Current Streak</CardTitle>
-                    <CardDescription>Keep learning daily to maintain your streak</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-col items-center justify-center p-6">
-                      <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                        <span className="text-4xl font-bold text-primary">{user.streakCount || 0}</span>
+            {/* Right Column */}
+            <div className="space-y-8">
+              {/* Learning Streak */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Learning Streak</CardTitle>
+                  <CardDescription>
+                    {personaData.streakCount} day streak • Keep it going!
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-7 gap-1">
+                    {streakData.map((value, i) => (
+                      <div key={i} className="aspect-square">
+                        <div 
+                          className={`w-full h-full rounded-sm ${
+                            value === 0 ? 'bg-muted' : 
+                            value === 1 ? 'bg-primary/30' : 
+                            'bg-primary'
+                          }`}
+                        ></div>
                       </div>
-                      <h3 className="text-xl font-semibold">
-                        {user.streakCount === 1 ? "1 Day" : `${user.streakCount || 0} Days`}
-                      </h3>
-                      <p className="text-muted-foreground text-center mt-2">
-                        {user.streakCount ? "Great job maintaining your streak!" : "Start learning today to begin your streak!"}
-                      </p>
+                    ))}
+                  </div>
+                  <div className="mt-4 text-xs text-muted-foreground text-center">
+                    Last 30 days
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <CalendarCheck className="h-4 w-4 text-muted-foreground mr-2" />
+                  <span className="text-sm text-muted-foreground">Maintain your streak by completing at least one learning activity daily</span>
+                </CardFooter>
+              </Card>
+
+              {/* Tips for Your Learning Style */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Tips for {personaData.primary}s</CardTitle>
+                  <CardDescription>
+                    Optimize your learning with these personalized strategies
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-2">
+                      <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                        <span className="text-primary text-xs">1</span>
+                      </div>
+                      <p className="text-sm">Use mind maps and visual diagrams to organize information</p>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                        <span className="text-primary text-xs">2</span>
+                      </div>
+                      <p className="text-sm">Convert text-based material into visual representations</p>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                        <span className="text-primary text-xs">3</span>
+                      </div>
+                      <p className="text-sm">Use color-coding for notes and highlighting key concepts</p>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                        <span className="text-primary text-xs">4</span>
+                      </div>
+                      <p className="text-sm">Watch educational videos instead of just reading text</p>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                        <span className="text-primary text-xs">5</span>
+                      </div>
+                      <p className="text-sm">Practice active listening to improve auditory learning areas</p>
+                    </li>
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Link href="/strategies">
+                    <Button variant="outline" className="w-full sm:w-auto">More Learning Strategies</Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+
+              {/* Certificates */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Your Certificates</CardTitle>
+                  <CardDescription>
+                    {personaData.certificates} earned certificates
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="border rounded-lg p-3 bg-muted/30 flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">Visual Learning Foundations</h4>
+                        <p className="text-xs text-muted-foreground">Completed on Apr 7, 2025</p>
+                      </div>
+                      <Button variant="ghost" size="sm">View</Button>
                     </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Streak Calendar</CardTitle>
-                    <CardDescription>Your learning activity</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="p-6 flex items-center justify-center">
-                      <p className="text-muted-foreground">
-                        Learning activity visualization coming soon
-                      </p>
+                    <div className="border rounded-lg p-3 bg-muted/30 flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">Learning Persona Essentials</h4>
+                        <p className="text-xs text-muted-foreground">Completed on Mar 20, 2025</p>
+                      </div>
+                      <Button variant="ghost" size="sm">View</Button>
                     </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Quiz Tab */}
-              <TabsContent value="quiz" className="space-y-6">
-                <h2 className="text-2xl font-bold">Learning Persona Quiz</h2>
-                {quizHistory && quizHistory.length > 0 ? (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Your Learning Persona</CardTitle>
-                      <CardDescription>
-                        Based on your most recent quiz result
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-col items-center justify-center p-6">
-                        <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                          <Award className="h-12 w-12 text-primary" />
-                        </div>
-                        <h3 className="text-xl font-semibold">
-                          {quizHistory[0].result}
-                        </h3>
-                        <p className="text-muted-foreground text-center mt-2 max-w-md">
-                          You took this quiz on {new Date(quizHistory[0].completedAt).toLocaleDateString()}.
-                          Your learning persona helps us recommend the best courses and strategies for your style.
-                        </p>
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-center">
-                      <Button variant="outline" onClick={() => navigate("/quiz")}>
-                        Retake Quiz
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ) : (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Discover Your Learning Persona</CardTitle>
-                      <CardDescription>
-                        Take our quiz to unlock personalized recommendations.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-col items-center justify-center p-6">
-                        <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                          <Award className="h-12 w-12 text-primary" />
-                        </div>
-                        <h3 className="text-xl font-semibold">
-                          Unlock Your Learning Potential
-                        </h3>
-                        <p className="text-muted-foreground text-center mt-2 max-w-md">
-                          Our assessment will help you understand your unique learning style.
-                          This insight allows us to recommend courses and strategies that align
-                          with how you learn best.
-                        </p>
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-center">
-                      <Button onClick={() => navigate("/quiz")}>
-                        Start Quiz
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                )}
-              </TabsContent>
-            </Tabs>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </main>
+
+      {/* Navigation Bar */}
+      <NavBar 
+        items={navItems}
+        className="lg:fixed lg:bottom-12 lg:mb-0"
+      />
     </div>
   );
 }
