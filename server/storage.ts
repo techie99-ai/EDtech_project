@@ -330,7 +330,167 @@ export class MemStorage implements IStorage {
 
   // Initialize some demo data for development
   private initDemoData() {
-    // Add sample data if needed during development
+    // Sample courses
+    const sampleCourses = [
+      {
+        title: "Critical Thinking Masterclass",
+        description: "Develop analytical thinking skills through systematic problem-solving methods and logical reasoning frameworks.",
+        url: "https://example.com/critical-thinking",
+        imageUrl: "https://example.com/critical-thinking.jpg",
+        provider: "ThinkWell Academy",
+        tags: ["critical thinking", "logic", "analysis"],
+        suitablePersonas: ["The Thinker", "The Synthesizer"],
+        difficulty: "Intermediate",
+        duration: "8 weeks"
+      },
+      {
+        title: "Collaborative Innovation Workshop",
+        description: "Learn to leverage group dynamics and collaborative techniques to generate innovative solutions to complex problems.",
+        url: "https://example.com/collaborative-innovation",
+        imageUrl: "https://example.com/collaboration.jpg",
+        provider: "ConnectEd Learning",
+        tags: ["collaboration", "innovation", "teamwork"],
+        suitablePersonas: ["The Connector", "The Explorer"],
+        difficulty: "Beginner",
+        duration: "4 weeks"
+      },
+      {
+        title: "Design Thinking Process",
+        description: "Master the design thinking methodology through hands-on projects and real-world applications.",
+        url: "https://example.com/design-thinking",
+        imageUrl: "https://example.com/design.jpg",
+        provider: "Create Academy",
+        tags: ["design thinking", "creativity", "problem-solving"],
+        suitablePersonas: ["The Creator", "The Explorer"],
+        difficulty: "Intermediate",
+        duration: "6 weeks"
+      },
+      {
+        title: "Systems Thinking Fundamentals",
+        description: "Learn to identify patterns, understand complex systems, and develop integrated solutions across disciplines.",
+        url: "https://example.com/systems-thinking",
+        imageUrl: "https://example.com/systems.jpg",
+        provider: "Holistic Learning Institute",
+        tags: ["systems thinking", "interdisciplinary", "patterns"],
+        suitablePersonas: ["The Synthesizer", "The Thinker"],
+        difficulty: "Advanced",
+        duration: "10 weeks"
+      },
+      {
+        title: "Exploratory Research Methods",
+        description: "Discover effective techniques for exploring new domains, gathering diverse information, and expanding knowledge boundaries.",
+        url: "https://example.com/exploratory-research",
+        imageUrl: "https://example.com/research.jpg",
+        provider: "Discovery Learning Center",
+        tags: ["research", "discovery", "exploration"],
+        suitablePersonas: ["The Explorer", "The Synthesizer"],
+        difficulty: "Intermediate",
+        duration: "5 weeks"
+      },
+      {
+        title: "Effective Communication Strategies",
+        description: "Build skills in articulating ideas, facilitating discussions, and navigating diverse communication contexts.",
+        url: "https://example.com/communication",
+        imageUrl: "https://example.com/communication.jpg",
+        provider: "ConnectEd Learning",
+        tags: ["communication", "facilitation", "networking"],
+        suitablePersonas: ["The Connector", "The Creator"],
+        difficulty: "Beginner",
+        duration: "6 weeks"
+      },
+      {
+        title: "Practical Project Management",
+        description: "Learn hands-on techniques for planning, executing, and delivering successful projects in various contexts.",
+        url: "https://example.com/project-management",
+        imageUrl: "https://example.com/project.jpg",
+        provider: "Create Academy",
+        tags: ["project management", "practical skills", "execution"],
+        suitablePersonas: ["The Creator", "The Thinker"],
+        difficulty: "Intermediate",
+        duration: "8 weeks"
+      },
+      {
+        title: "Data Analysis Fundamentals",
+        description: "Develop skills in statistical analysis, data interpretation, and evidence-based decision making.",
+        url: "https://example.com/data-analysis",
+        imageUrl: "https://example.com/data.jpg",
+        provider: "ThinkWell Academy",
+        tags: ["data analysis", "statistics", "decision making"],
+        suitablePersonas: ["The Thinker", "The Synthesizer"],
+        difficulty: "Intermediate",
+        duration: "7 weeks"
+      }
+    ];
+
+    // Add courses
+    sampleCourses.forEach(course => {
+      this.createCourse(course);
+    });
+
+    // Sample learning strategies
+    const sampleStrategies = [
+      {
+        title: "Mind Mapping",
+        description: "A visual technique for organizing information and seeing connections between concepts.",
+        content: "1. Start with a central idea or topic in the middle of a blank page\n2. Draw branches from the center with key concepts related to the main topic\n3. Add smaller branches with related details\n4. Use colors, images, and symbols to enhance memory\n5. Connect related ideas with lines or arrows\n6. Review and revise your mind map as your understanding evolves",
+        suitablePersonas: ["The Synthesizer", "The Explorer"],
+        type: "Organization"
+      },
+      {
+        title: "The Feynman Technique",
+        description: "A method for deepening understanding by explaining concepts in simple terms.",
+        content: "1. Choose a concept or topic you want to learn\n2. Explain it in simple language as if teaching a child\n3. Identify gaps in your explanation or understanding\n4. Review your source material to fill those gaps\n5. Simplify your explanation further, using analogies and plain language\n6. Repeat until you can explain the concept clearly and completely",
+        suitablePersonas: ["The Thinker", "The Connector"],
+        type: "Comprehension"
+      },
+      {
+        title: "Spaced Repetition",
+        description: "A technique for reviewing information at optimal intervals to improve long-term retention.",
+        content: "1. Learn the initial material thoroughly\n2. Review after 1 day\n3. Review again after 3 days\n4. Then after 7 days\n5. Then after 14 days\n6. Then after 30 days\n7. Use flashcards or spaced repetition software to automate this process\n8. Focus more time on difficult items and less on well-known items",
+        suitablePersonas: ["The Thinker", "The Synthesizer"],
+        type: "Retention"
+      },
+      {
+        title: "Project-Based Learning",
+        description: "Learning through the process of creating something tangible that solves a problem or meets a need.",
+        content: "1. Identify a real-world problem or need that interests you\n2. Research and gather information about the problem domain\n3. Design a project that addresses the problem\n4. Break the project into manageable steps\n5. Learn the necessary skills as you implement each step\n6. Reflect on challenges and solutions throughout the process\n7. Share your final project and gather feedback\n8. Document what you learned for future reference",
+        suitablePersonas: ["The Creator", "The Explorer"],
+        type: "Application"
+      },
+      {
+        title: "Collaborative Learning Circles",
+        description: "A method for learning through regular discussion and knowledge sharing with peers.",
+        content: "1. Form a group of 4-7 people with similar learning interests\n2. Set regular meeting times (weekly or bi-weekly)\n3. Establish clear goals and expectations for the group\n4. Rotate responsibility for facilitating discussions\n5. Share resources and insights between meetings\n6. Use structured formats like book discussions or topic presentations\n7. Provide constructive feedback to each other\n8. Document key insights from each meeting",
+        suitablePersonas: ["The Connector", "The Explorer"],
+        type: "Social Learning"
+      },
+      {
+        title: "Comparative Analysis",
+        description: "A technique for deepening understanding by systematically comparing related concepts or approaches.",
+        content: "1. Identify two or more related concepts, theories, or approaches\n2. Create a structured framework for comparison (table, matrix, etc.)\n3. Identify key dimensions or criteria for comparison\n4. Analyze similarities and differences across each dimension\n5. Consider contexts where each approach is most effective\n6. Synthesize insights about underlying principles\n7. Apply this comparative understanding to new situations",
+        suitablePersonas: ["The Synthesizer", "The Thinker"],
+        type: "Analysis"
+      },
+      {
+        title: "Exploratory Learning Journeys",
+        description: "A method for expanding knowledge through structured but open-ended exploration of related topics.",
+        content: "1. Start with a central topic of interest\n2. Identify 3-5 related subtopics or questions\n3. Set a time limit for initial exploration (e.g., 2 hours per subtopic)\n4. Gather diverse resources on each subtopic\n5. Take notes focusing on surprising discoveries and connections\n6. Create a visual map of how the topics interconnect\n7. Identify the most promising areas for deeper exploration\n8. Share your discoveries with others to gain new perspectives",
+        suitablePersonas: ["The Explorer", "The Synthesizer"],
+        type: "Discovery"
+      },
+      {
+        title: "Prototyping and Iteration",
+        description: "A hands-on approach to learning through creating quick versions, gathering feedback, and refining.",
+        content: "1. Start with a clear goal or problem to solve\n2. Create a simple, quick version (prototype) of your solution\n3. Test the prototype with real users or situations\n4. Gather specific feedback about what works and what doesn't\n5. Identify the most important improvements to make\n6. Create an improved version based on feedback\n7. Repeat the testing and iteration process\n8. Document lessons learned throughout the process",
+        suitablePersonas: ["The Creator", "The Connector"],
+        type: "Application"
+      }
+    ];
+
+    // Add learning strategies
+    sampleStrategies.forEach(strategy => {
+      this.createLearningStrategy(strategy);
+    });
   }
 }
 
