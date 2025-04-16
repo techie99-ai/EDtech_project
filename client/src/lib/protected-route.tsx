@@ -11,32 +11,28 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ path, component: Component, role }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth();
 
-  if (isLoading) {
-    return (
-      <Route path={path}>
-        <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      </Route>
-    );
-  }
+  return (
+    <Route path={path}>
+      {() => {
+        if (isLoading) {
+          return (
+            <div className="flex items-center justify-center min-h-screen">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          );
+        }
 
-  if (!user) {
-    return (
-      <Route path={path}>
-        <Redirect to="/auth" />
-      </Route>
-    );
-  }
+        if (!user) {
+          return <Redirect to="/auth" />;
+        }
 
-  // If role is specified, check if user has that role
-  if (role && user.role !== role) {
-    return (
-      <Route path={path}>
-        <Redirect to={user.role === "l&d_professional" ? "/ld-dashboard" : "/dashboard"} />
-      </Route>
-    );
-  }
+        // If role is specified, check if user has that role
+        if (role && user.role !== role) {
+          return <Redirect to={user.role === "l&d_professional" ? "/ld-dashboard" : "/dashboard"} />;
+        }
 
-  return <Route path={path} component={Component} />;
+        return <Component />;
+      }}
+    </Route>
+  );
 }

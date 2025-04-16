@@ -48,10 +48,10 @@ export default function LDDashboardPage() {
 
   // Define navigation items for L&D dashboard
   const navItems = [
-    { name: "Home", url: "/", icon: Home },
-    { name: "Team View", url: "/for-ld", icon: BarChart3 },
-    { name: "Courses", url: "/courses", icon: BookOpen },
-    { name: "Strategies", url: "/strategies", icon: Lightbulb },
+    { name: "Overview", url: "/ld-dashboard", icon: BarChart3 },
+    { name: "Create Content", url: "/create-content", icon: BookOpen },
+    { name: "Push Content", url: "/push-content", icon: School },
+    { name: "Monitor", url: "/monitor", icon: LineChart },
     { name: "Profile", url: "/profile", icon: User }
   ];
 
