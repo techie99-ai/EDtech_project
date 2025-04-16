@@ -180,7 +180,16 @@ export class MemStorage implements IStorage {
   // Course methods
   async createCourse(course: InsertCourse): Promise<Course> {
     const id = this.courseIdCounter++;
-    const newCourse: Course = { ...course, id };
+    const newCourse: Course = { 
+      ...course, 
+      id,
+      imageUrl: course.imageUrl || null,
+      provider: course.provider || null,
+      tags: course.tags || null,
+      suitablePersonas: course.suitablePersonas || null,
+      difficulty: course.difficulty || null,
+      duration: course.duration || null
+    };
     this.courses.set(id, newCourse);
     return newCourse;
   }
@@ -248,7 +257,11 @@ export class MemStorage implements IStorage {
   // Learning strategies methods
   async createLearningStrategy(strategy: InsertLearningStrategy): Promise<LearningStrategy> {
     const id = this.learningStrategyIdCounter++;
-    const newStrategy: LearningStrategy = { ...strategy, id };
+    const newStrategy: LearningStrategy = { 
+      ...strategy, 
+      id,
+      suitablePersonas: strategy.suitablePersonas || null 
+    };
     this.learningStrategies.set(id, newStrategy);
     return newStrategy;
   }
