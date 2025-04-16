@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 // Form schemas
 const loginFormSchema = z.object({
