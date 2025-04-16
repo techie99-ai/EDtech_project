@@ -28,6 +28,9 @@ const registerFormSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   email: z.string().email("Invalid email address"),
   department: z.string().optional(),
+  role: z.enum(["learner", "l&d_professional"], {
+    required_error: "Role is required",
+  }),
   password: z.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: z.string(),
 }).refine(data => data.password === data.confirmPassword, {
@@ -67,6 +70,7 @@ export default function AuthPage() {
       username: "",
       email: "",
       department: "",
+      role: "learner", // Default to learner role
       password: "",
       confirmPassword: "",
     },
@@ -211,6 +215,51 @@ export default function AuthPage() {
                             {...field}
                           />
                         </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={registerForm.control}
+                    name="role"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>I want to join as</FormLabel>
+                        <div className="grid grid-cols-2 gap-4 pt-2">
+                          <div
+                            className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                              field.value === "learner"
+                                ? "bg-primary/5 border-primary"
+                                : "hover:bg-muted"
+                            }`}
+                            onClick={() => field.onChange("learner")}
+                          >
+                            <div className="flex items-center mb-2">
+                              <div className={`w-4 h-4 rounded-full mr-2 ${field.value === "learner" ? "bg-primary" : "border border-muted-foreground"}`}></div>
+                              <span className="font-medium">Learner</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Discover your learning style and get personalized recommendations
+                            </p>
+                          </div>
+                          <div
+                            className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                              field.value === "l&d_professional"
+                                ? "bg-primary/5 border-primary"
+                                : "hover:bg-muted"
+                            }`}
+                            onClick={() => field.onChange("l&d_professional")}
+                          >
+                            <div className="flex items-center mb-2">
+                              <div className={`w-4 h-4 rounded-full mr-2 ${field.value === "l&d_professional" ? "bg-primary" : "border border-muted-foreground"}`}></div>
+                              <span className="font-medium">L&D Professional</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Monitor team learning profiles and manage content
+                            </p>
+                          </div>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}

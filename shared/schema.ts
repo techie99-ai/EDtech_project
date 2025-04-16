@@ -30,6 +30,7 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   department: text("department"),
+  role: text("role").default("learner").notNull(),
   persona: text("persona"),
   streakCount: integer("streak_count").default(0),
   lastActive: timestamp("last_active"),
@@ -87,7 +88,8 @@ export const insertUserSchema = createInsertSchema(users).pick({
   password: true,
   name: true,
   email: true,
-  department: true
+  department: true,
+  role: true
 });
 
 export const insertQuizResponseSchema = createInsertSchema(quizResponses).pick({

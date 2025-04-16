@@ -1,0 +1,86 @@
+🔧 PROMPT FOR AI MODEL / DEVELOPER
+Goal:
+Update the existing frontend-only website (HTML, CSS, JS) to include role-based access — users can sign up as either:
+
+👤 Learner
+
+🧑‍💼 L&D Professional
+
+Depending on the selected role, they will be directed to their own dashboard and feature set.
+
+📲 1. SIGN UP PAGE:
+Add two distinct sign-up options/buttons:
+
+“Continue as Learner”
+
+“Continue as L&D Professional”
+
+Based on the selection, route the user to the appropriate dashboard interface.
+
+You can store the selected role temporarily using localStorage or similar (frontend only).
+
+🧑‍🎓 2. LEARNER FLOW:
+After login/signup as a Learner, the user should land directly on their Dashboard:
+
+🖥️ Learner Dashboard:
+Display user’s Persona Summary
+
+Show Recommended Courses (based on persona type)
+
+Display:
+
+📌 Tags (e.g., AI, Communication, Leadership)
+
+🧠 Tips & Tools (Pomodoro, Mind Maps, etc.)
+
+Option to view open courses (can be static links or dummy cards)
+
+Option to retake the persona quiz
+
+🧑‍💼 3. L&D PROFESSIONAL FLOW:
+After login/signup as an L&D Professional, redirect to their own Multi-page Admin Dashboard with the following pages (use nav bar or side panel):
+
+📊 Page 1: Overview of Learners
+Display aggregated learner data (mock data is fine)
+
+Show persona distribution (e.g., Explorer: 5, Synthesizer: 8)
+
+Use basic charts/graphs if possible (use JS or mock SVGs)
+
+📚 Page 2: Create Content
+Interface for creating:
+
+📄 Tests
+
+🎯 Challenges
+
+📹 Video recommendations
+
+Basic form layout to simulate content creation
+
+📤 Page 3: Push Content (Persona Based)
+Let L&D Professional select a persona (e.g., “Connector”)
+
+Push relevant content (simulated logic using JavaScript and dummy data)
+
+📈 Page 4: Monitor Assignments & Results
+Table or dashboard showing:
+
+Assigned content
+
+Learners who completed it
+
+Basic performance (e.g., Passed/Failed, % Score)
+
+Simulate real-time updates or toggles (frontend only)
+
+🛠 TECHNICAL CONSTRAINTS:
+Use only HTML, CSS, and Vanilla JavaScript
+
+No frameworks or backend
+
+Role-switching and routing can be simulated with localStorage, dynamic rendering, or multiple HTML pages
+
+Ensure full responsiveness and mobile compatibility
+
+Use clean, reusable UI components and organized file structure
