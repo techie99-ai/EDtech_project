@@ -43,7 +43,8 @@ import {
   CheckCircle2,
   XCircle,
   HelpCircle,
-  Rocket
+  Rocket,
+  RefreshCw
 } from "lucide-react";
 
 interface LDDashboardPageProps {
@@ -300,7 +301,10 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
         <div className="max-w-7xl mx-auto">
           {/* Dashboard Tabs */}
           <div className="mb-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs 
+              value={activeTab} 
+              onValueChange={(value: "overview" | "create" | "push" | "monitor") => setActiveTab(value)} 
+              className="w-full">
               <TabsList className="grid w-full grid-cols-4 mb-6">
                 <TabsTrigger value="overview">
                   <BarChart3 className="mr-2 h-4 w-4" />
@@ -526,7 +530,10 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
                             </div>
                             <div className="grid grid-cols-4 gap-1 mb-2">
                               {personaTypes.map((persona, index) => {
-                                const percentage = personaDistribution[dept.name][persona];
+                                // Type safe access to the persona distribution data
+                                const percentage = dept.name in personaDistribution 
+                                  ? (persona in personaDistribution[dept.name] ? personaDistribution[dept.name][persona] : 0)
+                                  : 0;
                                 return (
                                   <div 
                                     key={index} 
