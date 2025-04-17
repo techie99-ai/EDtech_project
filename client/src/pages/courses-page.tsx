@@ -370,9 +370,9 @@ export default function CoursesPage() {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
-                        <Label htmlFor="test-duration" className="text-sm text-blue-700 dark:text-blue-300 mb-1.5 block">
+                        <div className="text-sm text-blue-700 dark:text-blue-300 mb-1.5 block">
                           Test Duration (minutes)
-                        </Label>
+                        </div>
                         <Select defaultValue="30">
                           <SelectTrigger id="test-duration" className="bg-white dark:bg-blue-900 border-blue-200 dark:border-blue-800">
                             <SelectValue placeholder="Select duration" />
@@ -388,9 +388,9 @@ export default function CoursesPage() {
                       </div>
                       
                       <div>
-                        <Label htmlFor="passing-score" className="text-sm text-blue-700 dark:text-blue-300 mb-1.5 block">
+                        <div className="text-sm text-blue-700 dark:text-blue-300 mb-1.5 block">
                           Passing Score (%)
-                        </Label>
+                        </div>
                         <Select defaultValue="70">
                           <SelectTrigger id="passing-score" className="bg-white dark:bg-blue-900 border-blue-200 dark:border-blue-800">
                             <SelectValue placeholder="Select passing score" />
