@@ -1,0 +1,53 @@
+Here's a draft prompt for enhancing the Create Learning Content page in your LearnPersona platform:
+
+# LearnPersona Content Creation Enhancement Prompt
+
+## Project Overview
+We need to enhance the "Create Learning Content" page in the LearnPersona L&D Dashboard to streamline the content creation process, improve persona targeting, and increase the effectiveness of learning resources.
+
+## Current Page Features
+- Basic content form with title and description fields
+- Simple content type selection (Courses, Tests, Challenges, Videos)
+- Basic target persona selection
+- Duration and difficulty settings
+- Limited guidance on persona targeting
+
+## Requested Enhancements
+Please design comprehensive solutions for the following priority features:
+
+1. **Intelligent Content Creation System**
+   - Design an enhanced content editor with multimedia embedding capabilities
+   - Create a template library with persona-optimized starting points
+   - Develop AI-assisted content recommendations based on selected personas
+   - Implement content optimization tools with real-time feedback
+
+2. **Advanced Persona Targeting Framework**
+   - Design an expanded persona selection interface with detailed learner profiles
+   - Create dynamic content adaptation recommendations based on selected personas
+   - Develop visual indicators showing content-to-persona alignment
+   - Include best practices guidance specific to each learning style
+
+3. **Learning Objectives & Outcomes System**
+   - Design interfaces for defining measurable learning objectives
+   - Create tools linking objectives to organizational competency frameworks
+   - Develop assessment mapping to verify objective achievement
+   - Implement outcome tracking connections to performance metrics
+
+4. **Content Integration & Pathways**
+   - Design visualization showing where content fits in learning journeys
+   - Create prerequisite and sequel content recommendation systems
+   - Develop department-specific content adaptation tools
+   - Include content relationship mapping tools
+
+## Technical Requirements
+- Enhancements should integrate with existing content management system
+- Solutions should support all current content types (Courses, Tests, Challenges, Videos)
+- Performance should remain optimal, particularly for media-rich content
+- All features should function across desktop and mobile experiences
+
+## Deliverables
+Please provide:
+1. Wireframes/mockups for each enhancement area
+2. Implementation roadmap with prioritization
+3. Technical specifications for development team
+4. User testing plan for new features
