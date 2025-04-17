@@ -1,58 +1,30 @@
-import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { SparklesCore } from "@/components/ui/sparkles";
-import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Button } from "@/components/ui/button";
 import { 
-  Home, 
   BookOpen, 
   Lightbulb, 
   BarChart, 
   User, 
   School, 
   Trophy, 
-  ChevronRight 
+  ChevronRight,
+  Brain,
+  Users
 } from "lucide-react";
 
 export default function HomePage() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
 
-  // Define navigation items for different user types
-  const learnerNavItems = [
-    { name: "Courses", url: "/courses", icon: BookOpen },
-    { name: "Strategies", url: "/strategies", icon: Lightbulb },
-    { name: "Dashboard", url: "/dashboard", icon: Trophy },
-    { name: "Profile", url: "/profile", icon: User }
-  ];
-
-  const ldNavItems = [
-    { name: "Overview", url: "/ld-dashboard", icon: BarChart },
-    { name: "Create Content", url: "/create-content", icon: BookOpen },
-    { name: "Push Content", url: "/push-content", icon: School },
-    { name: "Monitor", url: "/monitor", icon: Trophy },
-    { name: "Profile", url: "/profile", icon: User }
-  ];
-
-  // Define state for interface toggle
-  const [interfaceMode, setInterfaceMode] = useState<"learner" | "ld">("learner");
-  
-  const handleTakeQuiz = () => {
+  const handleAction = () => {
     if (user) {
-      if (interfaceMode === "learner") {
-        navigate(user.role === "l&d_professional" ? "/ld-dashboard" : "/quiz");
-      } else {
-        navigate(user.role === "learner" ? "/dashboard" : "/ld-dashboard");
-      }
+      navigate(user.role === "l&d_professional" ? "/ld-dashboard" : "/dashboard");
     } else {
       navigate("/auth");
     }
-  };
-
-  const toggleInterface = () => {
-    setInterfaceMode(interfaceMode === "learner" ? "ld" : "learner");
   };
 
   return (
@@ -61,28 +33,17 @@ export default function HomePage() {
       <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <School className="h-6 w-6 text-primary" />
+            <Brain className="h-6 w-6 text-primary" />
             <h1 className="text-xl font-bold text-foreground">LearnPersona</h1>
           </div>
           
           <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={toggleInterface}
-              className="text-sm"
-            >
-              {interfaceMode === "learner" ? "For L&D Professionals" : "For Learners"}
-            </Button>
-            
             <ThemeToggle />
             
             {user ? (
-              <Link href="/profile">
-                <Button variant="outline" size="sm" className="ml-4">
-                  {user.name || user.username}
-                </Button>
-              </Link>
+              <Button size="sm" className="ml-4" onClick={handleAction}>
+                Go to Dashboard
+              </Button>
             ) : (
               <Link href="/auth">
                 <Button size="sm" className="ml-4">
@@ -104,7 +65,7 @@ export default function HomePage() {
               background="transparent"
               minSize={0.6}
               maxSize={1.4}
-              particleColor={interfaceMode === "learner" ? "#5E60CE" : "#0EA5E9"}
+              particleColor="#5E60CE"
               particleDensity={100}
               className="w-full h-full"
               speed={1}
@@ -114,23 +75,19 @@ export default function HomePage() {
           <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
             <div className="max-w-2xl">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                {interfaceMode === "learner" 
-                  ? "Discover Your Learning Persona" 
-                  : "Understand Your Team's Learning Profiles"}
+                Personalized Learning Experience
               </h1>
               <p className="text-xl mb-8 text-foreground/80">
-                {interfaceMode === "learner"
-                  ? "Take our specially designed assessment to understand your unique learning style and get personalized recommendations."
-                  : "Gain insights into how your team learns best. Optimize training programs and boost productivity with data-driven learning strategies."}
+                Discover your unique learning style and get personalized recommendations to enhance your educational journey.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" onClick={handleTakeQuiz}>
-                  {interfaceMode === "learner" ? "Take the Quiz" : "View Team Dashboard"}
+                <Button size="lg" onClick={handleAction}>
+                  Get Started
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button variant="outline" size="lg" asChild>
-                  <Link href={interfaceMode === "learner" ? "/courses" : "/strategies"}>
-                    {interfaceMode === "learner" ? "Browse Courses" : "Explore Strategies"}
+                  <Link href="/auth">
+                    Learn More
                   </Link>
                 </Button>
               </div>
@@ -142,79 +99,79 @@ export default function HomePage() {
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">
-              {interfaceMode === "learner" 
-                ? "Personalized Learning Experience" 
-                : "L&D Professional Tools"}
+              A Two-Way Platform for Learning
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {interfaceMode === "learner" ? (
-                // Learner features
-                <>
-                  <div className="bg-card p-6 rounded-lg shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <User className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">Discover Your Persona</h3>
-                    <p className="text-muted-foreground">
-                      Take our assessment to identify your unique learning persona and understand how you learn best.
-                    </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {/* Learner features */}
+              <div className="bg-card p-8 rounded-xl shadow-md border-t-4 border-primary/70">
+                <div className="flex items-center mb-6">
+                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                    <User className="h-8 w-8 text-primary" />
                   </div>
-                  
-                  <div className="bg-card p-6 rounded-lg shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <BookOpen className="h-6 w-6 text-primary" />
+                  <h3 className="text-2xl font-bold">For Learners</h3>
+                </div>
+                
+                <ul className="space-y-4">
+                  <li className="flex items-start">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5 mr-3">
+                      <Trophy className="h-3 w-3 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Tailored Courses</h3>
-                    <p className="text-muted-foreground">
-                      Get course recommendations matched to your specific learning style and preferences.
-                    </p>
-                  </div>
-                  
-                  <div className="bg-card p-6 rounded-lg shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <Trophy className="h-6 w-6 text-primary" />
+                    <p>Discover your unique learning persona through our assessment</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5 mr-3">
+                      <BookOpen className="h-3 w-3 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Track Progress</h3>
-                    <p className="text-muted-foreground">
-                      Monitor your learning journey with streaks, achievements, and personalized insights.
-                    </p>
-                  </div>
-                </>
-              ) : (
-                // L&D Professional features
-                <>
-                  <div className="bg-card p-6 rounded-lg shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <BarChart className="h-6 w-6 text-primary" />
+                    <p>Access courses tailored to your learning style preferences</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5 mr-3">
+                      <Lightbulb className="h-3 w-3 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Team Insights</h3>
-                    <p className="text-muted-foreground">
-                      Get comprehensive analytics on learning personas across your organization.
-                    </p>
+                    <p>Get personalized learning strategies to enhance your education</p>
+                  </li>
+                </ul>
+                
+                <Button className="w-full mt-6" onClick={() => navigate("/auth")}>
+                  Register as a Learner
+                </Button>
+              </div>
+              
+              {/* L&D Professional features */}
+              <div className="bg-card p-8 rounded-xl shadow-md border-t-4 border-blue-500/70">
+                <div className="flex items-center mb-6">
+                  <div className="w-14 h-14 rounded-full bg-blue-500/10 flex items-center justify-center mr-4">
+                    <Users className="h-8 w-8 text-blue-500" />
                   </div>
-                  
-                  <div className="bg-card p-6 rounded-lg shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <Lightbulb className="h-6 w-6 text-primary" />
+                  <h3 className="text-2xl font-bold">For L&D Professionals</h3>
+                </div>
+                
+                <ul className="space-y-4">
+                  <li className="flex items-start">
+                    <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center mt-0.5 mr-3">
+                      <BarChart className="h-3 w-3 text-blue-500" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Strategy Recommendations</h3>
-                    <p className="text-muted-foreground">
-                      Access tailored learning strategies based on your team's unique composition.
-                    </p>
-                  </div>
-                  
-                  <div className="bg-card p-6 rounded-lg shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <BookOpen className="h-6 w-6 text-primary" />
+                    <p>Access detailed analytics about your team's learning personas</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center mt-0.5 mr-3">
+                      <School className="h-3 w-3 text-blue-500" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Course Management</h3>
-                    <p className="text-muted-foreground">
-                      Assign and track appropriate courses for different learning personas in your team.
-                    </p>
-                  </div>
-                </>
-              )}
+                    <p>Create and push tailored content to the right learners</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center mt-0.5 mr-3">
+                      <Trophy className="h-3 w-3 text-blue-500" />
+                    </div>
+                    <p>Monitor assignments and track performance across departments</p>
+                  </li>
+                </ul>
+                
+                <Button className="w-full mt-6 bg-blue-500 hover:bg-blue-600" onClick={() => navigate("/auth")}>
+                  Register as an L&D Professional
+                </Button>
+              </div>
             </div>
           </div>
         </section>
@@ -223,34 +180,24 @@ export default function HomePage() {
         <section className="py-20">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">
-              {interfaceMode === "learner" 
-                ? "Ready to discover your learning persona?" 
-                : "Ready to optimize your team's learning?"}
+              Ready to Transform Your Learning Experience?
             </h2>
             <p className="text-xl mb-8 text-foreground/80 max-w-2xl mx-auto">
-              {interfaceMode === "learner"
-                ? "Join thousands of learners who have improved their learning effectiveness through persona-based approaches."
-                : "Join leading organizations using data-driven insights to transform their training programs."}
+              Join thousands of learners and organizations who have improved their learning effectiveness through our persona-based approaches.
             </p>
-            <Button size="lg" onClick={handleTakeQuiz}>
-              {interfaceMode === "learner" ? "Take the Quiz Now" : "Access L&D Dashboard"}
+            <Button size="lg" onClick={handleAction}>
+              Get Started Now
             </Button>
           </div>
         </section>
       </main>
-
-      {/* Navigation Bar */}
-      <NavBar 
-        items={interfaceMode === "learner" ? learnerNavItems : ldNavItems}
-        className="lg:fixed lg:bottom-12 lg:mb-0"
-      />
 
       {/* Footer */}
       <footer className="bg-muted/30 border-t border-border py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <School className="h-5 w-5 text-primary" />
+              <Brain className="h-5 w-5 text-primary" />
               <span className="text-lg font-semibold">LearnPersona</span>
             </div>
             <div className="flex gap-6">
