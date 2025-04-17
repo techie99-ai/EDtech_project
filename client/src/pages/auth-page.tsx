@@ -49,7 +49,12 @@ export default function AuthPage() {
   // Redirect if user is already logged in
   useEffect(() => {
     if (user) {
-      navigate("/");
+      // Redirect based on role
+      if (user.role === "l&d_professional") {
+        navigate("/ld-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     }
   }, [user, navigate]);
 
