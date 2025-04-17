@@ -92,10 +92,6 @@ export default function StrategiesPage() {
               <Link href="/strategies" className="text-primary font-medium">
                 Strategies
               </Link>
-              <Link href="/quiz" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
-                <School className="h-4 w-4" />
-                Take Quiz
-              </Link>
             </nav>
             
             {user ? (

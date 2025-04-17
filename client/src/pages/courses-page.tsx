@@ -164,10 +164,6 @@ export default function CoursesPage() {
               <Link href="/strategies" className="text-foreground hover:text-primary transition-colors">
                 Strategies
               </Link>
-              <Link href="/quiz" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
-                <School className="h-4 w-4" />
-                Take Quiz
-              </Link>
             </nav>
             
             <ThemeToggle />

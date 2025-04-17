@@ -31,6 +31,64 @@ export default function DashboardPage() {
     navigate("/auth");
     return null;
   }
+  
+  // If user is logged in but doesn't have a persona, redirect to the quiz
+  if (user && !user.persona) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="max-w-2xl w-full mx-auto p-8">
+          <Card className="border-primary/20 shadow-lg">
+            <CardHeader className="text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Brain className="h-8 w-8 text-primary" />
+              </div>
+              <CardTitle className="text-2xl">Discover Your Learning Persona</CardTitle>
+              <CardDescription className="text-lg">
+                Welcome to LearnPersona! To provide you with personalized learning experiences, 
+                we need to determine your unique learning style.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-muted rounded-lg p-4">
+                <h3 className="font-medium mb-2 flex items-center gap-2">
+                  <Lightbulb className="h-5 w-5 text-primary" />
+                  Why Take The Quiz?
+                </h3>
+                <p className="text-muted-foreground">
+                  Our quick assessment will help identify your learning persona and enable us to recommend 
+                  courses, strategies, and content that match how you learn best.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div className="flex flex-col items-center text-center p-4 rounded-lg border border-border">
+                  <Trophy className="h-10 w-10 text-primary mb-2" />
+                  <h4 className="font-medium">Personalized Recommendations</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Get courses and strategies tailored to your learning style
+                  </p>
+                </div>
+                <div className="flex flex-col items-center text-center p-4 rounded-lg border border-border">
+                  <BarChart className="h-10 w-10 text-primary mb-2" />
+                  <h4 className="font-medium">Maximize Learning Efficiency</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Learn more effectively with content that matches your style
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-center pb-8">
+              <Link href="/quiz">
+                <Button size="lg" className="px-8">
+                  Take the Quiz Now
+                </Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   // Define navigation items for learner dashboard - conditional based on role
   const navItems = [
