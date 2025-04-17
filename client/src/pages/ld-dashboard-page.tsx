@@ -406,6 +406,139 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
 
                 {/* Main Overview Content */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Learning Style Preferences */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Learning Style Preferences</CardTitle>
+                      <CardDescription>
+                        Rank of preferred learning styles across the organization
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-80">
+                        <div className="grid grid-cols-4 gap-2 h-full">
+                          {/* Visual Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">52%</span>
+                            </div>
+                            <div className="w-full bg-blue-500 rounded-t-md" style={{ height: '52%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Visual</p>
+                              <p className="text-[10px] text-muted-foreground">(e.g., videos, interactive media)</p>
+                            </div>
+                          </div>
+                          
+                          {/* Reading/Writing Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">21%</span>
+                            </div>
+                            <div className="w-full bg-purple-500 rounded-t-md" style={{ height: '21%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Reading</p>
+                              <p className="text-[10px] text-muted-foreground">(e.g., articles, case studies)</p>
+                            </div>
+                          </div>
+                          
+                          {/* Kinesthetic Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">14%</span>
+                            </div>
+                            <div className="w-full bg-green-500 rounded-t-md" style={{ height: '14%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Kinesthetic</p>
+                              <p className="text-[10px] text-muted-foreground">(e.g., hands-on activities)</p>
+                            </div>
+                          </div>
+                          
+                          {/* Auditory Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">13%</span>
+                            </div>
+                            <div className="w-full bg-amber-500 rounded-t-md" style={{ height: '13%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Auditory</p>
+                              <p className="text-[10px] text-muted-foreground">(e.g., lectures, podcasts)</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  {/* Digital Learning Platform Usage */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Digital Learning Platform Usage</CardTitle>
+                      <CardDescription>
+                        Frequency of using digital learning platforms for professional development
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-80">
+                        <div className="grid grid-cols-5 gap-2 h-full">
+                          {/* Daily Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">45%</span>
+                            </div>
+                            <div className="w-full bg-indigo-500 rounded-t-md" style={{ height: '45%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Daily</p>
+                            </div>
+                          </div>
+                          
+                          {/* Weekly Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">40%</span>
+                            </div>
+                            <div className="w-full bg-indigo-400 rounded-t-md" style={{ height: '40%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Weekly</p>
+                            </div>
+                          </div>
+                          
+                          {/* Monthly Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">9%</span>
+                            </div>
+                            <div className="w-full bg-indigo-300 rounded-t-md" style={{ height: '9%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Monthly</p>
+                            </div>
+                          </div>
+                          
+                          {/* Occasionally Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">5%</span>
+                            </div>
+                            <div className="w-full bg-indigo-200 rounded-t-md" style={{ height: '5%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Occasionally</p>
+                            </div>
+                          </div>
+                          
+                          {/* Never Bar */}
+                          <div className="flex flex-col items-center justify-end">
+                            <div className="text-center mt-2 mb-4">
+                              <span className="text-xs text-muted-foreground">1%</span>
+                            </div>
+                            <div className="w-full bg-indigo-100 rounded-t-md" style={{ height: '1%' }}></div>
+                            <div className="mt-3 text-center">
+                              <p className="text-xs font-medium">Never</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
                   {/* Learning Effectiveness */}
                   <Card className="lg:col-span-2">
                     <CardHeader>

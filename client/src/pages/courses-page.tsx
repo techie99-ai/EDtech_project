@@ -157,6 +157,19 @@ export default function CoursesPage() {
           </div>
           
           <div className="flex items-center gap-4">
+            <nav className="hidden md:flex items-center gap-6 mr-4">
+              <Link href="/courses" className="text-primary font-medium">
+                Courses
+              </Link>
+              <Link href="/strategies" className="text-foreground hover:text-primary transition-colors">
+                Strategies
+              </Link>
+              <Link href="/quiz" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+                <School className="h-4 w-4" />
+                Take Quiz
+              </Link>
+            </nav>
+            
             <ThemeToggle />
             
             {user ? (
