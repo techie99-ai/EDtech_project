@@ -316,7 +316,7 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
                 </TabsTrigger>
                 <TabsTrigger value="monitor">
                   <LineChart className="mr-2 h-4 w-4" />
-                  Monitor Results
+                  Top Performers
                 </TabsTrigger>
               </TabsList>
 
@@ -402,32 +402,106 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
 
                 {/* Main Overview Content */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* Persona Distribution */}
+                  {/* Learning Effectiveness */}
                   <Card className="lg:col-span-2">
                     <CardHeader>
-                      <CardTitle>Learning Persona Distribution</CardTitle>
+                      <CardTitle>Learning Effectiveness</CardTitle>
                       <CardDescription>
-                        Breakdown of learning personas across different departments
+                        Effectiveness of learning methods across different learning styles
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="h-80 flex items-center justify-center">
-                        <DatabaseWithRestApi 
-                          className="w-full"
-                          circleText="Data"
-                          lightColor="#3b82f6"
-                          title="Learning Persona Analytics API"
-                          badgeTexts={{
-                            first: "Users",
-                            second: "Personas",
-                            third: "Trends",
-                            fourth: "Reports"
-                          }}
-                          buttonTexts={{
-                            first: "Learning Profiles",
-                            second: "API v1.0"
-                          }}
-                        />
+                        <div className="w-full max-w-2xl mx-auto">
+                          <div className="relative">
+                            {/* Radar Chart for Learning Effectiveness */}
+                            <div className="flex flex-col items-center">
+                              {/* Visual axis */}
+                              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4">
+                                <div className="text-sm font-medium">Visual</div>
+                              </div>
+                              
+                              {/* Auditory axis */}
+                              <div className="absolute top-1/4 right-0 transform translate-x-4 -translate-y-1/2">
+                                <div className="text-sm font-medium">Auditory</div>
+                              </div>
+                              
+                              {/* Kinesthetic axis */}
+                              <div className="absolute bottom-0 right-1/4 transform translate-x-1/2 translate-y-4">
+                                <div className="text-sm font-medium">Kinesthetic</div>
+                              </div>
+                              
+                              {/* Reading/Writing axis */}
+                              <div className="absolute bottom-0 left-1/4 transform -translate-x-1/2 translate-y-4">
+                                <div className="text-sm font-medium">Reading</div>
+                              </div>
+                              
+                              {/* Practical axis */}
+                              <div className="absolute top-1/4 left-0 transform -translate-x-4 -translate-y-1/2">
+                                <div className="text-sm font-medium">Practical</div>
+                              </div>
+                              
+                              {/* Radar chart polygon */}
+                              <svg width="300" height="300" viewBox="0 0 200 200" className="mb-4">
+                                {/* Background grid */}
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="#ddd" strokeWidth="1" />
+                                <circle cx="100" cy="100" r="60" fill="none" stroke="#ddd" strokeWidth="1" />
+                                <circle cx="100" cy="100" r="40" fill="none" stroke="#ddd" strokeWidth="1" />
+                                <circle cx="100" cy="100" r="20" fill="none" stroke="#ddd" strokeWidth="1" />
+                                
+                                {/* Axes */}
+                                <line x1="100" y1="20" x2="100" y2="180" stroke="#ddd" strokeWidth="1" />
+                                <line x1="20" y1="100" x2="180" y2="100" stroke="#ddd" strokeWidth="1" />
+                                <line x1="37" y1="37" x2="163" y2="163" stroke="#ddd" strokeWidth="1" />
+                                <line x1="37" y1="163" x2="163" y2="37" stroke="#ddd" strokeWidth="1" />
+                                
+                                {/* Data polygon */}
+                                <polygon 
+                                  points="100,30 160,70 140,150 60,150 40,70" 
+                                  fill="rgba(125, 140, 230, 0.2)" 
+                                  stroke="rgba(125, 140, 230, 0.8)" 
+                                  strokeWidth="2"
+                                />
+                                
+                                {/* Data points */}
+                                <circle cx="100" cy="30" r="4" fill="rgba(125, 140, 230, 1)" />
+                                <circle cx="160" cy="70" r="4" fill="rgba(125, 140, 230, 1)" />
+                                <circle cx="140" cy="150" r="4" fill="rgba(125, 140, 230, 1)" />
+                                <circle cx="60" cy="150" r="4" fill="rgba(125, 140, 230, 1)" />
+                                <circle cx="40" cy="70" r="4" fill="rgba(125, 140, 230, 1)" />
+                                
+                                {/* Scale indicators */}
+                                <text x="102" y="20" fontSize="6" textAnchor="start" fill="currentColor">100%</text>
+                                <text x="102" y="40" fontSize="6" textAnchor="start" fill="currentColor">75%</text>
+                                <text x="102" y="60" fontSize="6" textAnchor="start" fill="currentColor">50%</text>
+                                <text x="102" y="80" fontSize="6" textAnchor="start" fill="currentColor">25%</text>
+                              </svg>
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4">
+                            <div className="text-center">
+                              <div className="text-lg font-semibold">85%</div>
+                              <div className="text-xs text-muted-foreground">Visual</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-lg font-semibold">70%</div>
+                              <div className="text-xs text-muted-foreground">Auditory</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-lg font-semibold">65%</div>
+                              <div className="text-xs text-muted-foreground">Kinesthetic</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-lg font-semibold">60%</div>
+                              <div className="text-xs text-muted-foreground">Reading</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-lg font-semibold">75%</div>
+                              <div className="text-xs text-muted-foreground">Practical</div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -789,7 +863,7 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
                                   <SelectValue placeholder="All departments" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="">All Departments</SelectItem>
+                                  <SelectItem value="all">All Departments</SelectItem>
                                   {departments.map(dept => (
                                     <SelectItem key={dept.id} value={dept.id}>
                                       {dept.name}
