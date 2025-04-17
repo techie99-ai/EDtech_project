@@ -9,7 +9,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "wouter";
-import { Search, BookOpen, TrendingUp, Lightbulb, School } from "lucide-react";
+import { 
+  Search, 
+  BookOpen, 
+  TrendingUp, 
+  Lightbulb, 
+  School, 
+  ChevronRight,
+  Brain, 
+  Users
+} from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 
 export default function StrategiesPage() {
@@ -82,6 +91,10 @@ export default function StrategiesPage() {
               </Link>
               <Link href="/strategies" className="text-primary font-medium">
                 Strategies
+              </Link>
+              <Link href="/quiz" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+                <School className="h-4 w-4" />
+                Take Quiz
               </Link>
             </nav>
             
@@ -257,32 +270,73 @@ interface StrategyCardProps {
 
 function StrategyCard({ strategy }: StrategyCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  // Determine badge color based on strategy type
+  const getTypeBadgeColor = (type: string) => {
+    switch(type) {
+      case "Organization": return "bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-300";
+      case "Comprehension": return "bg-purple-50 text-purple-700 dark:bg-purple-900 dark:text-purple-300";
+      case "Retention": return "bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-300";
+      case "Application": return "bg-amber-50 text-amber-700 dark:bg-amber-900 dark:text-amber-300";
+      case "Social Learning": return "bg-pink-50 text-pink-700 dark:bg-pink-900 dark:text-pink-300";
+      case "Analysis": return "bg-indigo-50 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300";
+      case "Discovery": return "bg-cyan-50 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-300";
+      default: return "bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
+    }
+  };
+
+  // Get icon based on strategy type
+  const getTypeIcon = (type: string) => {
+    switch(type) {
+      case "Organization": return <BookOpen className="h-4 w-4" />;
+      case "Comprehension": return <Lightbulb className="h-4 w-4" />;
+      case "Retention": return <Brain className="h-4 w-4" />;
+      case "Application": return <School className="h-4 w-4" />;
+      case "Social Learning": return <Users className="h-4 w-4" />;
+      case "Analysis": return <Search className="h-4 w-4" />;
+      case "Discovery": return <TrendingUp className="h-4 w-4" />;
+      default: return <Lightbulb className="h-4 w-4" />;
+    }
+  };
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-start justify-between">
+    <Card className="overflow-hidden border border-border/40 transition-all hover:shadow-md">
+      <div className="h-1.5 w-full bg-gradient-to-r from-primary/80 to-primary"></div>
+      <CardHeader className="pb-2">
+        <div className="flex items-start justify-between gap-4">
           <div>
-            <CardTitle>{strategy.title}</CardTitle>
-            <CardDescription>{strategy.type}</CardDescription>
+            <CardTitle className="text-xl">{strategy.title}</CardTitle>
+            <Badge 
+              variant="outline" 
+              className={`mt-2 inline-flex items-center gap-1.5 ${getTypeBadgeColor(strategy.type)}`}
+            >
+              {getTypeIcon(strategy.type)}
+              {strategy.type}
+            </Badge>
           </div>
-          <Badge className="bg-primary/10 text-primary hover:bg-primary/20">
-            {strategy.suitablePersonas?.join(", ")}
-          </Badge>
+          <div className="flex flex-wrap gap-1 justify-end">
+            {strategy.suitablePersonas?.map((persona, index) => (
+              <Badge key={index} className="bg-primary/10 text-primary hover:bg-primary/20 whitespace-nowrap">
+                {persona}
+              </Badge>
+            ))}
+          </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pt-2">
         <p className="text-muted-foreground">
           {strategy.description}
         </p>
         
-        <div className={`${isExpanded ? 'block' : 'hidden'}`}>
-          <div className="bg-muted p-4 rounded-md mt-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Lightbulb className="h-5 w-5 text-primary" />
+        <div className={`${isExpanded ? 'block' : 'hidden'} transition-all duration-300`}>
+          <div className="bg-muted p-4 rounded-md mt-4 border border-border/30">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <Lightbulb className="h-4 w-4 text-primary" />
+              </div>
               <h4 className="font-medium">How to apply this strategy:</h4>
             </div>
-            <div className="text-sm text-muted-foreground whitespace-pre-line">
+            <div className="text-sm text-muted-foreground whitespace-pre-line pl-10">
               {strategy.content}
             </div>
           </div>
@@ -290,11 +344,12 @@ function StrategyCard({ strategy }: StrategyCardProps) {
       </CardContent>
       <CardFooter>
         <Button 
-          variant="outline" 
-          className="w-full"
+          variant={isExpanded ? "outline" : "default"}
+          className="w-full gap-2"
           onClick={() => setIsExpanded(!isExpanded)}
         >
-          {isExpanded ? "Show Less" : "Learn More"}
+          {isExpanded ? "Show Less" : "Learn How to Apply"}
+          {isExpanded ? null : <ChevronRight className="h-4 w-4" />}
         </Button>
       </CardFooter>
     </Card>
