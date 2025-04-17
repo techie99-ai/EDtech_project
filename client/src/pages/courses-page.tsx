@@ -103,7 +103,7 @@ export default function CoursesPage() {
       // Apply persona filter
       const matchesPersona =
         selectedPersona === "all" ||
-        (course.recommendedPersonas && course.recommendedPersonas.includes(selectedPersona));
+        (course.suitablePersonas && course.suitablePersonas.includes(selectedPersona));
       
       // Apply duration filter
       const matchesDuration =
