@@ -440,80 +440,43 @@ export default function CoursesPage() {
             )}
           </div>
 
-          {/* Featured course (if applicable) */}
+          {/* Top courses showcase (grid-based layout) */}
           {!hasActiveFilters && courses && courses.length > 0 && (
             <div className="mb-10">
-              <div className="rounded-xl overflow-hidden border bg-card text-card-foreground shadow">
-                <div className="grid grid-cols-1 md:grid-cols-2">
-                  <div className="p-6 md:p-8 flex flex-col justify-between">
-                    <div>
-                      <div className="flex gap-2 mb-4">
-                        <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-0">
-                          Featured
+              <h3 className="text-xl font-semibold mb-6">Top Courses</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {courses.slice(0, 3).map((course, index) => (
+                  <div key={index} className="rounded-xl overflow-hidden border bg-card text-card-foreground shadow group hover:shadow-md transition-shadow">
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-3"></div>
+                    <div className="p-6">
+                      <div className="mb-1">
+                        <Badge variant="outline" className="mb-2">
+                          {course.provider || "ThinkWell Academy"}
                         </Badge>
-                        <Badge variant="outline">Top Rated</Badge>
                       </div>
-                      <h3 className="text-2xl font-bold mb-2">{courses[0].title}</h3>
-                      <p className="text-muted-foreground mb-4">{courses[0].description}</p>
+                      <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">{course.title}</h3>
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{course.description}</p>
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {courses[0].tags?.slice(0, 3).map((tag, index) => (
+                        {course.tags?.slice(0, 3).map((tag, index) => (
                           <Badge key={index} variant="outline" className="text-xs">
                             {tag}
                           </Badge>
                         ))}
                       </div>
-                    </div>
-                    <div>
                       <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                         <div className="flex items-center gap-2">
                           <BarChart className="h-4 w-4" />
-                          <span>{courses[0].difficulty || "All Levels"}</span>
+                          <span>{course.difficulty || "Intermediate"}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4" />
-                          <span>{courses[0].duration || "Self-paced"}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4" />
-                          <span>250+ enrolled</span>
+                          <span>{course.duration || "8 weeks"}</span>
                         </div>
                       </div>
-                      <Button className="w-full">Explore Course</Button>
+                      <Button className="w-full" size="sm">View Course</Button>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 md:p-8 flex flex-col">
-                    <div className="mb-auto">
-                      <h4 className="text-lg font-bold mb-2">Why This Course?</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 mt-0.5 text-blue-200" />
-                          <span>Created specifically for {courses[0].recommendedPersonas?.join(", ") || "all personas"}</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 mt-0.5 text-blue-200" />
-                          <span>Highly interactive learning experience</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 mt-0.5 text-blue-200" />
-                          <span>Practical exercises with immediate feedback</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1 mb-3">
-                        <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                        <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                        <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                        <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                        <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                        <span className="ml-2 text-sm">5.0 (48 reviews)</span>
-                      </div>
-                      <div className="text-sm italic text-blue-100">
-                        "This course transformed my approach to learning and problem-solving."
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           )}
@@ -747,96 +710,85 @@ function CourseCard({ course }: CourseCardProps) {
     if (persona.includes("Reading")) return "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800";
     return "";
   };
+  
+  // Get suitable personas or use "ALL LEARNERS" as fallback
+  const targetPersonas = course.suitablePersonas && course.suitablePersonas.length > 0 
+    ? course.suitablePersonas[0] 
+    : "ALL LEARNERS";
+    
+  // Get a letter code based on persona type
+  const getPersonaCode = () => {
+    if (targetPersonas.includes("Visual")) return "V";
+    if (targetPersonas.includes("Auditory")) return "A";
+    if (targetPersonas.includes("Kinesthetic")) return "K";
+    if (targetPersonas.includes("Reading")) return "R";
+    return "C"; // For "ALL LEARNERS" or unknown types
+  };
 
   return (
-    <div className="border rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
-      <div className="grid grid-cols-12 gap-0">
-        <div className="col-span-12 md:col-span-3 bg-gradient-to-br from-blue-500 to-indigo-600 h-40 md:h-full flex items-center justify-center p-4">
-          <div className="text-white text-center">
-            <div className="text-3xl font-bold mb-1">
-              {course.title.charAt(0)}
-            </div>
-            <div className="text-xs uppercase tracking-wider opacity-80">
-              {course.recommendedPersonas && course.recommendedPersonas[0] || "All Learners"}
-            </div>
+    <div className="rounded-xl overflow-hidden bg-card border shadow group hover:shadow-md transition-all">
+      <div className="relative">
+        {/* Color strip at top with persona indicator */}
+        <div className="w-full h-1.5 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+        
+        {/* Persona indicator badge */}
+        <div className="absolute -top-1 left-4 transform -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center border-2 border-background bg-blue-600 text-white font-semibold text-sm">
+          {getPersonaCode()}
+        </div>
+      </div>
+      
+      <div className="p-5">
+        {/* Provider badge */}
+        <div className="mb-2">
+          <Badge variant="outline" className="text-xs mb-1">
+            {course.provider || "ThinkWell Academy"}
+          </Badge>
+        </div>
+        
+        {/* Course title */}
+        <h3 className="font-semibold text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+          {course.title}
+        </h3>
+        
+        {/* Course description */}
+        <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+          {course.description}
+        </p>
+        
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {course.tags?.slice(0, 3).map((tag, index) => (
+            <Badge key={index} variant="secondary" className="text-xs px-1.5 py-0">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+        
+        {/* Course info */}
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+          <div className="flex items-center gap-1">
+            <BarChart className="h-3.5 w-3.5" />
+            <span>{course.difficulty || "Intermediate"}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Clock className="h-3.5 w-3.5" />
+            <span>{course.duration || "8 weeks"}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800 px-1 py-0 text-[10px]">
+              Free
+            </Badge>
           </div>
         </div>
-        <div className="col-span-12 md:col-span-9 p-6">
-          <div className="flex flex-col h-full justify-between">
-            <div>
-              <div className="flex justify-between mb-2">
-                <h3 className="font-semibold text-lg">{course.title}</h3>
-                <div className="flex items-center gap-1">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm font-medium">{course.rating || "4.8"}</span>
-                </div>
-              </div>
-              
-              {course.provider && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                  <span>{course.provider}</span>
-                  {course.isVerified && (
-                    <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800">
-                      Verified
-                    </Badge>
-                  )}
-                </div>
-              )}
-              
-              <p className="text-muted-foreground text-sm mb-3">{course.description}</p>
-              
-              {course.recommendedPersonas && course.recommendedPersonas.length > 0 && (
-                <div className="mb-3">
-                  <p className="text-xs text-muted-foreground mb-1">Recommended for:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {course.recommendedPersonas.map((persona, index) => (
-                      <Badge 
-                        key={index} 
-                        variant="outline" 
-                        className={`text-xs ${getPersonaBadgeColor(persona)}`}
-                      >
-                        {persona}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              <div className="flex flex-wrap gap-2 mb-3">
-                {course.tags?.slice(0, 3).map((tag, index) => (
-                  <Badge key={index} variant="secondary" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            
-            <div className="flex items-center justify-between pt-3 border-t mt-2">
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <BarChart className="h-4 w-4" />
-                  <span>{course.difficulty || "All Levels"}</span>
-                </div>
-                
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  <span>{course.duration || "Self-paced"}</span>
-                </div>
-                
-                <span className="font-medium text-foreground">
-                  {course.price ? `$${course.price}` : "Free"}
-                </span>
-              </div>
-              
-              <Button 
-                size="sm"
-                onClick={() => window.open(course.url, '_blank')}
-              >
-                View Course
-              </Button>
-            </div>
-          </div>
-        </div>
+        
+        {/* Action button */}
+        <Button 
+          size="sm" 
+          className="w-full"
+          onClick={() => window.open(course.url, '_blank')}
+        >
+          View Course
+        </Button>
       </div>
     </div>
   );
