@@ -24,7 +24,10 @@ import {
   Brain,
   Flame,
   ThumbsUp,
-  GraduationCap
+  GraduationCap,
+  School,
+  Signal,
+  CheckCircle2
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -218,18 +221,34 @@ export default function CoursesPage() {
             </div>
             
             {showFilters && (
-              <div className="bg-muted/40 rounded-lg p-6 space-y-6 mb-6 border">
-                <h3 className="font-semibold mb-4">Refine Results</h3>
+              <div className="bg-card rounded-lg p-6 space-y-6 mb-6 border shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <Filter className="h-4 w-4" />
+                    Refine Results
+                  </h3>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={resetFilters}
+                    className="text-xs h-8 px-2"
+                  >
+                    Clear All
+                  </Button>
+                </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {/* Difficulty Filter */}
-                  <div>
-                    <Label className="mb-2 block">Difficulty Level</Label>
+                  <div className="flex flex-col h-full">
+                    <Label className="mb-2 flex items-center gap-1.5 text-sm font-normal text-muted-foreground">
+                      <Signal className="h-3.5 w-3.5" />
+                      Difficulty Level
+                    </Label>
                     <Select 
                       value={difficultyFilter} 
                       onValueChange={setDifficultyFilter}
                     >
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full h-9">
                         <SelectValue placeholder="All Difficulties" />
                       </SelectTrigger>
                       <SelectContent>
@@ -239,16 +258,25 @@ export default function CoursesPage() {
                         <SelectItem value="Advanced">Advanced</SelectItem>
                       </SelectContent>
                     </Select>
+                    {difficultyFilter !== "all" && (
+                      <div className="mt-1 text-xs text-primary flex items-center">
+                        <CheckCircle2 className="h-3 w-3 mr-1" />
+                        Filter active
+                      </div>
+                    )}
                   </div>
                   
                   {/* Persona Filter */}
-                  <div>
-                    <Label className="mb-2 block">Learning Persona</Label>
+                  <div className="flex flex-col h-full">
+                    <Label className="mb-2 flex items-center gap-1.5 text-sm font-normal text-muted-foreground">
+                      <Users className="h-3.5 w-3.5" />
+                      Learning Persona
+                    </Label>
                     <Select 
                       value={selectedPersona} 
                       onValueChange={setSelectedPersona}
                     >
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full h-9">
                         <SelectValue placeholder="All Personas" />
                       </SelectTrigger>
                       <SelectContent>
@@ -258,16 +286,25 @@ export default function CoursesPage() {
                         ))}
                       </SelectContent>
                     </Select>
+                    {selectedPersona !== "all" && (
+                      <div className="mt-1 text-xs text-primary flex items-center">
+                        <CheckCircle2 className="h-3 w-3 mr-1" />
+                        Filter active
+                      </div>
+                    )}
                   </div>
                   
                   {/* Duration Filter */}
-                  <div>
-                    <Label className="mb-2 block">Duration</Label>
+                  <div className="flex flex-col h-full">
+                    <Label className="mb-2 flex items-center gap-1.5 text-sm font-normal text-muted-foreground">
+                      <Clock className="h-3.5 w-3.5" />
+                      Duration
+                    </Label>
                     <Select 
                       value={selectedDuration} 
                       onValueChange={setSelectedDuration}
                     >
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full h-9">
                         <SelectValue placeholder="All Durations" />
                       </SelectTrigger>
                       <SelectContent>
@@ -279,19 +316,31 @@ export default function CoursesPage() {
                         <SelectItem value="Self-paced">Self-paced</SelectItem>
                       </SelectContent>
                     </Select>
+                    {selectedDuration !== "all" && (
+                      <div className="mt-1 text-xs text-primary flex items-center">
+                        <CheckCircle2 className="h-3 w-3 mr-1" />
+                        Filter active
+                      </div>
+                    )}
                   </div>
                   
-                  {/* Provider Filter (placeholder for real data) */}
-                  <div>
-                    <Label className="mb-2 block">Provider</Label>
-                    <Select>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="All Providers" />
+                  {/* Course Type Filter */}
+                  <div className="flex flex-col h-full">
+                    <Label className="mb-2 flex items-center gap-1.5 text-sm font-normal text-muted-foreground">
+                      <BookOpen className="h-3.5 w-3.5" />
+                      Course Type
+                    </Label>
+                    <Select defaultValue="all">
+                      <SelectTrigger className="w-full h-9">
+                        <SelectValue placeholder="All Types" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Providers</SelectItem>
-                        <SelectItem value="internal">Internal</SelectItem>
-                        <SelectItem value="external">External</SelectItem>
+                        <SelectItem value="all">All Types</SelectItem>
+                        <SelectItem value="course">Course</SelectItem>
+                        <SelectItem value="test">Test</SelectItem>
+                        <SelectItem value="challenge">Challenge</SelectItem>
+                        <SelectItem value="video">Video</SelectItem>
+                        <SelectItem value="article">Article</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
