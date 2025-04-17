@@ -39,8 +39,19 @@ export const SparklesCore = (props: ParticlesProps) => {
   }, []);
   const controls = useAnimation();
 
+  // Create a reference to store the container
+  const containerRef = React.useRef<Container | null>(null);
+  
+  // Use a separate callback for particlesLoaded
   const particlesLoaded = async (container?: Container) => {
     if (container) {
+      containerRef.current = container;
+    }
+  };
+  
+  // Use useEffect to start animation when container is loaded
+  useEffect(() => {
+    if (containerRef.current) {
       controls.start({
         opacity: 1,
         transition: {
@@ -48,7 +59,7 @@ export const SparklesCore = (props: ParticlesProps) => {
         },
       });
     }
-  };
+  }, [containerRef.current, controls]);
 
   const generatedId = useId();
   return (
