@@ -68,38 +68,42 @@ export default function StrategiesPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header with navigation */}
-      <header className="border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-foreground">LearnPersona</h1>
+            <Lightbulb className="h-6 w-6 text-primary" />
+            <h1 className="text-xl font-bold text-foreground">LearnPersona</h1>
           </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-foreground hover:text-primary transition-colors">
-              Home
-            </Link>
-            <Link href="/for-learners" className="text-foreground hover:text-primary transition-colors">
-              For Learners
-            </Link>
-            <Link href="/for-ld" className="text-foreground hover:text-primary transition-colors">
-              For L&D Professionals
-            </Link>
-            <Link href="/courses" className="text-foreground hover:text-primary transition-colors">
-              Courses
-            </Link>
-            <Link href="/strategies" className="text-foreground hover:text-primary transition-colors">
-              Strategies
-            </Link>
-            {user && (
-              <Link href="/dashboard" className="text-foreground hover:text-primary transition-colors">
-                Dashboard
+          
+          <div className="flex items-center gap-4">
+            <nav className="hidden md:flex items-center gap-6">
+              <Link href="/courses" className="text-foreground hover:text-primary transition-colors">
+                Courses
+              </Link>
+              <Link href="/strategies" className="text-primary font-medium">
+                Strategies
+              </Link>
+            </nav>
+            
+            {user ? (
+              <Link href={user.role === "l&d_professional" ? "/ld-dashboard" : "/dashboard"}>
+                <Button variant="outline" size="sm">
+                  Go to Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/auth">
+                <Button size="sm">
+                  Sign In
+                </Button>
               </Link>
             )}
-          </nav>
+          </div>
         </div>
       </header>
 
       {/* Main content */}
-      <main className="container mx-auto py-8 px-4">
+      <main className="pt-20 pb-32 container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="mb-10">
             <h2 className="text-3xl font-bold mb-2">Learning Strategies</h2>
