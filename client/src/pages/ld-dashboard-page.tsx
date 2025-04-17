@@ -798,84 +798,193 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-2">
                     <Card>
-                      <CardHeader>
-                        <CardTitle>Persona-Based Content Distribution</CardTitle>
-                        <CardDescription>
-                          Push suitable content to users matching specific personas
-                        </CardDescription>
+                      <CardHeader className="border-b">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle>Persona-Based Content Distribution</CardTitle>
+                            <CardDescription>
+                              Push suitable content to users matching specific personas
+                            </CardDescription>
+                          </div>
+                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800">
+                            Enhanced Features
+                          </Badge>
+                        </div>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="pt-6">
                         <form className="space-y-6">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label htmlFor="content-select">Content to Push</Label>
-                              <Select>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select content" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {courseEffectiveness.map(course => (
-                                    <SelectItem key={course.id} value={course.id.toString()}>
-                                      {course.name}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            
-                            <div className="space-y-2">
-                              <Label htmlFor="audience-type">Target Audience Type</Label>
-                              <Select defaultValue="persona">
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select audience type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="persona">By Persona</SelectItem>
-                                  <SelectItem value="department">By Department</SelectItem>
-                                  <SelectItem value="individual">Specific Individuals</SelectItem>
-                                  <SelectItem value="all">All Users</SelectItem>
-                                </SelectContent>
-                              </Select>
+                          <div className="bg-muted p-4 rounded-lg border mb-6">
+                            <h4 className="text-sm font-medium flex items-center mb-3">
+                              <BookOpen className="h-4 w-4 mr-2 text-primary" />
+                              Content Selection
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="content-select" className="text-sm font-normal flex items-center gap-1.5">
+                                  Content to Push
+                                </Label>
+                                <Select>
+                                  <SelectTrigger className="bg-white dark:bg-gray-900">
+                                    <SelectValue placeholder="Select content" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {courseEffectiveness.map(course => (
+                                      <SelectItem key={course.id} value={course.id.toString()}>
+                                        {course.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              
+                              <div className="space-y-2">
+                                <Label htmlFor="content-type" className="text-sm font-normal flex items-center gap-1.5">
+                                  Content Type
+                                </Label>
+                                <Select defaultValue="course">
+                                  <SelectTrigger className="bg-white dark:bg-gray-900">
+                                    <SelectValue placeholder="Select type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="course">Course</SelectItem>
+                                    <SelectItem value="assessment">Assessment</SelectItem>
+                                    <SelectItem value="article">Article</SelectItem>
+                                    <SelectItem value="video">Video</SelectItem>
+                                    <SelectItem value="test">Test</SelectItem>
+                                    <SelectItem value="challenge">Challenge</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
                             </div>
                           </div>
                           
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800 mb-6">
+                            <h4 className="font-medium text-blue-800 dark:text-blue-300 flex items-center gap-2 mb-3">
+                              <Users className="h-4 w-4" />
+                              Target Audience
+                            </h4>
+                            
+                            <div className="space-y-3 mb-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="audience-type" className="text-sm font-normal text-blue-700 dark:text-blue-400">
+                                  Audience Type
+                                </Label>
+                                <Select defaultValue="persona">
+                                  <SelectTrigger className="border-blue-200 dark:border-blue-800 bg-white dark:bg-blue-900">
+                                    <SelectValue placeholder="Select audience type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="persona">By Persona</SelectItem>
+                                    <SelectItem value="department">By Department</SelectItem>
+                                    <SelectItem value="individual">Specific Individuals</SelectItem>
+                                    <SelectItem value="all">All Users</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="target-persona-push" className="text-sm font-normal text-blue-700 dark:text-blue-400">
+                                  Target Persona
+                                </Label>
+                                <Select>
+                                  <SelectTrigger className="border-blue-200 dark:border-blue-800 bg-white dark:bg-blue-900">
+                                    <SelectValue placeholder="Select target persona" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {personaTypes.map((persona, index) => (
+                                      <SelectItem key={index} value={persona.toLowerCase().replace(/\s/g, '-')}>
+                                        {persona}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              
+                              <div className="space-y-2">
+                                <Label htmlFor="department-filter" className="text-sm font-normal text-blue-700 dark:text-blue-400">
+                                  Department Filter (Optional)
+                                </Label>
+                                <Select defaultValue="">
+                                  <SelectTrigger className="border-blue-200 dark:border-blue-800 bg-white dark:bg-blue-900">
+                                    <SelectValue placeholder="All departments" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="all">All Departments</SelectItem>
+                                    {departments.map(dept => (
+                                      <SelectItem key={dept.id} value={dept.id}>
+                                        {dept.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+                            
+                            <div className="mt-3 pt-3 border-t border-blue-200 dark:border-blue-800">
+                              <div className="flex items-center gap-1">
+                                <CheckCircle2 className="h-3.5 w-3.5 text-blue-700 dark:text-blue-400" />
+                                <span className="text-xs text-blue-700 dark:text-blue-400">
+                                  Target selection will automatically match content to appropriate learning styles
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <div className="space-y-2">
-                              <Label htmlFor="target-persona-push">Target Persona</Label>
-                              <Select>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select target persona" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {personaTypes.map((persona, index) => (
-                                    <SelectItem key={index} value={persona.toLowerCase().replace(/\s/g, '-')}>
-                                      {persona}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
+                              <Label htmlFor="deadline" className="flex items-center gap-1.5">
+                                <Clock className="h-3.5 w-3.5" />
+                                Completion Deadline
+                              </Label>
+                              <Input id="deadline" type="date" />
                             </div>
                             
                             <div className="space-y-2">
-                              <Label htmlFor="department-filter">Department Filter (Optional)</Label>
-                              <Select defaultValue="">
+                              <Label htmlFor="priority" className="flex items-center gap-1.5">
+                                <Rocket className="h-3.5 w-3.5" />
+                                Priority Level
+                              </Label>
+                              <Select defaultValue="normal">
                                 <SelectTrigger>
-                                  <SelectValue placeholder="All departments" />
+                                  <SelectValue placeholder="Select priority" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="all">All Departments</SelectItem>
-                                  {departments.map(dept => (
-                                    <SelectItem key={dept.id} value={dept.id}>
-                                      {dept.name}
-                                    </SelectItem>
-                                  ))}
+                                  <SelectItem value="low">
+                                    <div className="flex items-center">
+                                      <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                                      Low
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="normal">
+                                    <div className="flex items-center">
+                                      <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                                      Normal
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="high">
+                                    <div className="flex items-center">
+                                      <div className="w-2 h-2 rounded-full bg-orange-500 mr-2"></div>
+                                      High
+                                    </div>
+                                  </SelectItem>
+                                  <SelectItem value="urgent">
+                                    <div className="flex items-center">
+                                      <div className="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
+                                      Urgent
+                                    </div>
+                                  </SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
                           </div>
                           
                           <div className="space-y-2">
-                            <Label htmlFor="push-message">Message (Optional)</Label>
+                            <Label htmlFor="push-message" className="flex items-center gap-1.5">
+                              <Send className="h-3.5 w-3.5" />
+                              Message to Recipients
+                            </Label>
                             <Textarea 
                               id="push-message" 
                               placeholder="Add a custom message to accompany this content"
@@ -883,29 +992,7 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
                             />
                           </div>
                           
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label htmlFor="deadline">Completion Deadline</Label>
-                              <Input id="deadline" type="date" />
-                            </div>
-                            
-                            <div className="space-y-2">
-                              <Label htmlFor="priority">Priority Level</Label>
-                              <Select defaultValue="normal">
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select priority" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="low">Low</SelectItem>
-                                  <SelectItem value="normal">Normal</SelectItem>
-                                  <SelectItem value="high">High</SelectItem>
-                                  <SelectItem value="urgent">Urgent</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-2">
+                          <div className="p-3 bg-muted rounded-md mt-4">
                             <div className="flex items-center">
                               <input
                                 type="checkbox"
@@ -913,13 +1000,19 @@ export default function LDDashboardPage({ initialTab = "overview" }: LDDashboard
                                 className="h-4 w-4 mr-2"
                                 defaultChecked
                               />
-                              <Label htmlFor="send-notification">Send notification to recipients</Label>
+                              <Label htmlFor="send-notification" className="text-sm">Send notification to recipients</Label>
                             </div>
                           </div>
                           
-                          <div className="flex justify-end">
-                            <Button variant="outline" className="mr-2">Schedule for Later</Button>
-                            <Button>Push Content Now</Button>
+                          <div className="flex items-center justify-between pt-4 border-t">
+                            <Button variant="outline" className="gap-1">
+                              <Clock className="h-3.5 w-3.5 mr-1" />
+                              Schedule for Later
+                            </Button>
+                            <Button className="gap-1">
+                              <Send className="h-3.5 w-3.5 mr-1" />
+                              Push Content Now
+                            </Button>
                           </div>
                         </form>
                       </CardContent>

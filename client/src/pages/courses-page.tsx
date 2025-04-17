@@ -41,6 +41,7 @@ export default function CoursesPage() {
   const [selectedPersona, setSelectedPersona] = useState("all");
   const [selectedDuration, setSelectedDuration] = useState("all");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showTestConfig, setShowTestConfig] = useState(false);
   
   // Fetch all courses
   const { data: courses, isLoading: isLoadingCourses } = useQuery<Course[]>({
@@ -330,7 +331,16 @@ export default function CoursesPage() {
                       <BookOpen className="h-3.5 w-3.5" />
                       Course Type
                     </Label>
-                    <Select defaultValue="all">
+                    <Select 
+                      defaultValue="all"
+                      onValueChange={(value) => {
+                        if (value === "test") {
+                          setShowTestConfig(true);
+                        } else {
+                          setShowTestConfig(false);
+                        }
+                      }}
+                    >
                       <SelectTrigger className="w-full h-9">
                         <SelectValue placeholder="All Types" />
                       </SelectTrigger>
@@ -345,6 +355,67 @@ export default function CoursesPage() {
                     </Select>
                   </div>
                 </div>
+                
+                {/* Test Configuration (shown only when test type is selected) */}
+                {showTestConfig && (
+                  <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800 mt-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="bg-blue-500 text-white p-1.5 rounded">
+                        <CheckCircle className="h-4 w-4" />
+                      </div>
+                      <h4 className="font-medium text-blue-700 dark:text-blue-300">
+                        Test Configuration
+                      </h4>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <Label htmlFor="test-duration" className="text-sm text-blue-700 dark:text-blue-300 mb-1.5 block">
+                          Test Duration (minutes)
+                        </Label>
+                        <Select defaultValue="30">
+                          <SelectTrigger id="test-duration" className="bg-white dark:bg-blue-900 border-blue-200 dark:border-blue-800">
+                            <SelectValue placeholder="Select duration" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="15">15 minutes</SelectItem>
+                            <SelectItem value="30">30 minutes</SelectItem>
+                            <SelectItem value="45">45 minutes</SelectItem>
+                            <SelectItem value="60">60 minutes</SelectItem>
+                            <SelectItem value="90">90 minutes</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="passing-score" className="text-sm text-blue-700 dark:text-blue-300 mb-1.5 block">
+                          Passing Score (%)
+                        </Label>
+                        <Select defaultValue="70">
+                          <SelectTrigger id="passing-score" className="bg-white dark:bg-blue-900 border-blue-200 dark:border-blue-800">
+                            <SelectValue placeholder="Select passing score" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="60">60%</SelectItem>
+                            <SelectItem value="70">70%</SelectItem>
+                            <SelectItem value="80">80%</SelectItem>
+                            <SelectItem value="90">90%</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-end">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        className="bg-white dark:bg-blue-900 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800"
+                      >
+                        Apply Test Settings
+                      </Button>
+                    </div>
+                  </div>
+                )}
                 
                 {/* Tags Filter */}
                 <div>
