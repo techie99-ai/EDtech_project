@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation, Link } from "wouter";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { NavBar } from "@/components/ui/tubelight-navbar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -12,48 +15,57 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
-import { SparklesCore } from "@/components/ui/sparkles";
+import { Label } from "@/components/ui/label";
+import DatabaseWithRestApi from "@/components/ui/database-with-rest-api";
+import { Badge } from "@/components/ui/badge";
 import { 
-  Home, 
   BookOpen, 
-  Lightbulb, 
   User, 
-  Users, 
+  BarChart, 
   BarChart3, 
-  Brain, 
   PieChart, 
-  Calendar, 
-  Clock, 
-  LineChart, 
-  Download,
+  LineChart,
+  Search,
+  Plus,
+  ListChecks,
+  Brain,
   School,
-  Building2,
-  ChevronsUpDown,
+  Users,
+  ListFilter,
+  Send,
+  ChevronRight,
+  Clock,
+  Download,
   Filter,
-  Search
+  Loader2,
+  Lightbulb,
+  Trophy,
+  CheckCircle2,
+  XCircle,
+  HelpCircle,
+  Rocket
 } from "lucide-react";
 
-export default function LDDashboardPage() {
+interface LDDashboardPageProps {
+  initialTab?: "overview" | "create" | "push" | "monitor";
+}
+
+export default function LDDashboardPage({ initialTab = "overview" }: LDDashboardPageProps) {
   const { user } = useAuth();
   const [, navigate] = useLocation();
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [filterDepartment, setFilterDepartment] = useState<string>("all");
 
-  // Redirect if not logged in
+  // Redirect if not logged in or not an L&D professional
   if (!user) {
     navigate("/auth");
     return null;
   }
 
-  // Define navigation items for L&D dashboard
-  const navItems = [
-    { name: "Overview", url: "/ld-dashboard", icon: BarChart3 },
-    { name: "Create Content", url: "/create-content", icon: BookOpen },
-    { name: "Push Content", url: "/push-content", icon: School },
-    { name: "Monitor", url: "/monitor", icon: LineChart },
-    { name: "Profile", url: "/profile", icon: User }
-  ];
+  if (user.role !== "l&d_professional") {
+    navigate("/dashboard");
+    return null;
+  }
 
   // Sample department data
   const departments = [
@@ -62,6 +74,14 @@ export default function LDDashboardPage() {
     { id: "marketing", name: "Marketing" },
     { id: "hr", name: "Human Resources" },
     { id: "product", name: "Product" }
+  ];
+
+  // Sample persona types
+  const personaTypes = [
+    "Visual Learner",
+    "Auditory Learner",
+    "Kinesthetic Learner",
+    "Reading/Writing Learner"
   ];
 
   // Sample persona distribution data by department
@@ -201,10 +221,54 @@ export default function LDDashboardPage() {
     }
   ];
 
-  // Filter user activity data based on department
-  const filteredUserActivity = filterDepartment === "all" 
-    ? userActivityData 
-    : userActivityData.filter(user => user.department.toLowerCase() === departments.find(d => d.id === filterDepartment)?.name.toLowerCase());
+  // Sample assignments data
+  const assignmentsData = [
+    {
+      id: 1,
+      title: "Visual Learning Fundamentals",
+      assignedTo: "Engineering",
+      targetPersona: "Visual Learner",
+      completionRate: 68,
+      deadline: "2023-11-15",
+      status: "active"
+    },
+    {
+      id: 2,
+      title: "Effective Audio Communication",
+      assignedTo: "Sales",
+      targetPersona: "Auditory Learner",
+      completionRate: 75,
+      deadline: "2023-11-20",
+      status: "active"
+    },
+    {
+      id: 3,
+      title: "Hands-on Problem Solving",
+      assignedTo: "Product",
+      targetPersona: "Kinesthetic Learner",
+      completionRate: 92,
+      deadline: "2023-11-10",
+      status: "completed"
+    },
+    {
+      id: 4,
+      title: "Documentation Best Practices",
+      assignedTo: "Human Resources",
+      targetPersona: "Reading/Writing Learner",
+      completionRate: 45,
+      deadline: "2023-11-25",
+      status: "active"
+    },
+    {
+      id: 5,
+      title: "Creative Visual Marketing",
+      assignedTo: "Marketing",
+      targetPersona: "Visual Learner",
+      completionRate: 100,
+      deadline: "2023-11-05",
+      status: "completed"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -212,9 +276,9 @@ export default function LDDashboardPage() {
       <header className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <School className="h-6 w-6 text-primary" />
+            <Brain className="h-6 w-6 text-primary" />
             <h1 className="text-xl font-bold text-foreground">LearnPersona</h1>
-            <span className="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-md ml-2">L&D Dashboard</span>
+            <span className="bg-blue-500/10 text-blue-500 text-xs px-2 py-0.5 rounded-md ml-2">L&D Dashboard</span>
           </div>
           
           <div className="flex items-center gap-4">
@@ -234,383 +298,804 @@ export default function LDDashboardPage() {
       {/* Main Content */}
       <main className="pt-20 pb-32 container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
-          {/* Title and Filters */}
-          <section className="mb-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-              <div>
-                <h1 className="text-3xl font-bold mb-2">L&D Professional Dashboard</h1>
-                <p className="text-muted-foreground">
-                  Comprehensive insights to optimize your team's learning effectiveness
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Select value={filterDepartment} onValueChange={setFilterDepartment}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Filter by department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Departments</SelectItem>
-                    {departments.map(dept => (
-                      <SelectItem key={dept.id} value={dept.id}>{dept.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Button variant="outline" size="icon">
-                  <Download className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </section>
+          {/* Dashboard Tabs */}
+          <div className="mb-6">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-4 mb-6">
+                <TabsTrigger value="overview">
+                  <BarChart3 className="mr-2 h-4 w-4" />
+                  Overview
+                </TabsTrigger>
+                <TabsTrigger value="create">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Create Content
+                </TabsTrigger>
+                <TabsTrigger value="push">
+                  <Send className="mr-2 h-4 w-4" />
+                  Push Content
+                </TabsTrigger>
+                <TabsTrigger value="monitor">
+                  <LineChart className="mr-2 h-4 w-4" />
+                  Monitor Results
+                </TabsTrigger>
+              </TabsList>
 
-          {/* Key Stats Overview */}
-          <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <Users className="h-6 w-6 text-primary" />
+              {/* Overview Tab */}
+              <TabsContent value="overview" className="space-y-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                  <div>
+                    <h1 className="text-3xl font-bold mb-2">Overview of Learners</h1>
+                    <p className="text-muted-foreground">
+                      Visual summary of learners and their personas across the organization
+                    </p>
                   </div>
-                  <div className="text-2xl font-bold">{userActivityData.length}</div>
-                  <p className="text-sm text-muted-foreground">Active Learners</p>
+                  <div className="flex gap-2">
+                    <Select value={filterDepartment} onValueChange={setFilterDepartment}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Filter by department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Departments</SelectItem>
+                        {departments.map(dept => (
+                          <SelectItem key={dept.id} value={dept.id}>{dept.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button variant="outline" size="icon">
+                      <Download className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <Building2 className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="text-2xl font-bold">{departments.length}</div>
-                  <p className="text-sm text-muted-foreground">Departments</p>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <BookOpen className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="text-2xl font-bold">{courseEffectiveness.length}</div>
-                  <p className="text-sm text-muted-foreground">Active Courses</p>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <Calendar className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="text-2xl font-bold">
-                    {userActivityData.filter(user => user.activeToday).length}
-                  </div>
-                  <p className="text-sm text-muted-foreground">Active Today</p>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
 
-          {/* Main Dashboard Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column */}
-            <div className="col-span-2 space-y-8">
-              {/* Persona Distribution by Department */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Learning Persona Distribution</CardTitle>
-                  <CardDescription>
-                    Breakdown of learning personas across different departments
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Tabs defaultValue="Engineering" className="w-full">
-                    <TabsList className="grid grid-cols-5 mb-6">
-                      {departments.map(dept => (
-                        <TabsTrigger key={dept.id} value={dept.name}>{dept.name}</TabsTrigger>
-                      ))}
-                    </TabsList>
+                {/* Key Stats Overview */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center mb-2">
+                          <Users className="h-6 w-6 text-blue-500" />
+                        </div>
+                        <div className="text-2xl font-bold">{userActivityData.length}</div>
+                        <p className="text-sm text-muted-foreground">Active Learners</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center mb-2">
+                          <Brain className="h-6 w-6 text-blue-500" />
+                        </div>
+                        <div className="text-2xl font-bold">{personaTypes.length}</div>
+                        <p className="text-sm text-muted-foreground">Learning Personas</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center mb-2">
+                          <BookOpen className="h-6 w-6 text-blue-500" />
+                        </div>
+                        <div className="text-2xl font-bold">{courseEffectiveness.length}</div>
+                        <p className="text-sm text-muted-foreground">Active Courses</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center mb-2">
+                          <ListChecks className="h-6 w-6 text-blue-500" />
+                        </div>
+                        <div className="text-2xl font-bold">
+                          {assignmentsData.filter(assignment => assignment.status === "active").length}
+                        </div>
+                        <p className="text-sm text-muted-foreground">Active Assignments</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
 
-                    {departments.map(dept => (
-                      <TabsContent key={dept.id} value={dept.name} className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {/* Persona Distribution Chart (simplified with colored bars) */}
-                          <div className="space-y-3">
-                            {Object.entries(personaDistribution[dept.name]).map(([persona, percentage]) => (
-                              <div key={persona} className="space-y-1">
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm font-medium">{persona}</span>
-                                  <span className="text-sm">{percentage}%</span>
+                {/* Main Overview Content */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Persona Distribution */}
+                  <Card className="lg:col-span-2">
+                    <CardHeader>
+                      <CardTitle>Learning Persona Distribution</CardTitle>
+                      <CardDescription>
+                        Breakdown of learning personas across different departments
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-80 flex items-center justify-center">
+                        <DatabaseWithRestApi 
+                          className="w-full"
+                          circleText="Data"
+                          lightColor="#3b82f6"
+                          title="Learning Persona Analytics API"
+                          badgeTexts={{
+                            first: "Users",
+                            second: "Personas",
+                            third: "Trends",
+                            fourth: "Reports"
+                          }}
+                          buttonTexts={{
+                            first: "Learning Profiles",
+                            second: "API v1.0"
+                          }}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Department Breakdown */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Department Breakdown</CardTitle>
+                      <CardDescription>
+                        Learning persona distribution by department
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-6">
+                        {departments.map(dept => (
+                          <div key={dept.id} className="space-y-2">
+                            <div className="flex justify-between">
+                              <span className="font-medium">{dept.name}</span>
+                              <span className="text-sm text-muted-foreground">
+                                {userActivityData.filter(u => u.department === dept.name).length} learners
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-4 gap-1 mb-2">
+                              {personaTypes.map((persona, index) => {
+                                const percentage = personaDistribution[dept.name][persona];
+                                return (
+                                  <div 
+                                    key={index} 
+                                    className="h-8 flex items-center justify-center text-xs font-medium text-white rounded-sm"
+                                    style={{ 
+                                      width: `${percentage}%`, 
+                                      backgroundColor: index === 0 ? '#818cf8' : 
+                                                       index === 1 ? '#60a5fa' : 
+                                                       index === 2 ? '#34d399' : 
+                                                                    '#fbbf24'
+                                    }}
+                                  >
+                                    {percentage}%
+                                  </div>
+                                );
+                              })}
+                            </div>
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                              {personaTypes.map((persona, index) => (
+                                <div key={index} className="flex items-center">
+                                  <div 
+                                    className="w-2 h-2 rounded-full mr-1"
+                                    style={{ 
+                                      backgroundColor: index === 0 ? '#818cf8' : 
+                                                       index === 1 ? '#60a5fa' : 
+                                                       index === 2 ? '#34d399' : 
+                                                                    '#fbbf24'
+                                    }}
+                                  ></div>
+                                  <span>{persona.split(" ")[0]}</span>
                                 </div>
-                                <Progress 
-                                  value={percentage} 
-                                  className={`h-2 ${
-                                    persona === "Visual Learner" ? "bg-indigo-100 dark:bg-indigo-950" : 
-                                    persona === "Auditory Learner" ? "bg-blue-100 dark:bg-blue-950" : 
-                                    persona === "Kinesthetic Learner" ? "bg-green-100 dark:bg-green-950" : 
-                                    "bg-amber-100 dark:bg-amber-950"
-                                  }`}
-                                  indicatorClassName={`${
-                                    persona === "Visual Learner" ? "bg-indigo-500" : 
-                                    persona === "Auditory Learner" ? "bg-blue-500" : 
-                                    persona === "Kinesthetic Learner" ? "bg-green-500" : 
-                                    "bg-amber-500"
-                                  }`}
-                                />
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                           </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                          {/* Recommendations */}
-                          <div>
-                            <h3 className="text-lg font-medium mb-3">Department Insights</h3>
-                            <div className="space-y-3 text-sm">
-                              <p>
-                                <span className="font-medium">Primary Learning Style: </span>
-                                {Object.entries(personaDistribution[dept.name]).reduce((a, b) => a[1] > b[1] ? a : b)[0]}
-                              </p>
-                              <p>
-                                <span className="font-medium">Recommended Approach: </span>
-                                {dept.name === "Engineering" ? "Visual learning materials with code examples" :
-                                 dept.name === "Sales" ? "Audio/video role playing scenarios and discussions" :
-                                 dept.name === "Marketing" ? "Mix of visual content and written case studies" :
-                                 dept.name === "Human Resources" ? "Text-based guides with interactive scenarios" :
-                                 "Visual workflows and hands-on practice sessions"}
-                              </p>
-                              <p>
-                                <span className="font-medium">Course Completion Rate: </span>
-                                {dept.name === "Engineering" ? "78%" :
-                                 dept.name === "Sales" ? "82%" :
-                                 dept.name === "Marketing" ? "75%" :
-                                 dept.name === "Human Resources" ? "85%" :
-                                 "80%"}
-                              </p>
-                              <p>
-                                <span className="font-medium">Recommended Courses: </span>
-                                {dept.name === "Engineering" ? "Visual Learning Mastery, Technical Documentation" :
-                                 dept.name === "Sales" ? "Auditory Learning Techniques, Persuasive Communication" :
-                                 dept.name === "Marketing" ? "Mixed Learning Strategies, Creative Thinking" :
-                                 dept.name === "Human Resources" ? "Reading & Writing Strategies, People Skills" :
-                                 "Visual Learning Mastery, Hands-on Learning Workshop"}
-                              </p>
+                  {/* Top Performers */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Top Performers</CardTitle>
+                      <CardDescription>
+                        Learners with the highest activity and completion rates
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {userActivityData
+                          .sort((a, b) => (b.completedCourses + b.streakCount) - (a.completedCourses + a.streakCount))
+                          .slice(0, 5)
+                          .map(user => (
+                            <div key={user.id} className="flex items-center justify-between p-2 border-b last:border-0">
+                              <div className="flex items-center">
+                                <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-700 dark:text-blue-300 font-medium mr-3">
+                                  {user.name.split(' ').map(n => n[0]).join('')}
+                                </div>
+                                <div>
+                                  <div className="font-medium">{user.name}</div>
+                                  <div className="text-xs flex items-center gap-2">
+                                    <span className="text-muted-foreground">{user.department}</span>
+                                    <Badge variant="outline" className="text-[10px] px-1 py-0">
+                                      {user.persona.split(' ')[0]}
+                                    </Badge>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm">{user.completedCourses} courses</div>
+                                <div className="text-xs text-muted-foreground">
+                                  {user.streakCount} day streak
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        }
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              {/* Create Content Tab */}
+              <TabsContent value="create" className="space-y-8">
+                <div>
+                  <h1 className="text-3xl font-bold mb-2">Create Learning Content</h1>
+                  <p className="text-muted-foreground">
+                    Design new learning experiences tailored to different persona types
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="col-span-2">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>New Content Form</CardTitle>
+                        <CardDescription>
+                          Fill in the details to create a new learning resource
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <form className="space-y-6">
+                          <div className="space-y-2">
+                            <Label htmlFor="content-title">Title</Label>
+                            <Input id="content-title" placeholder="Enter a descriptive title" />
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="content-type">Content Type</Label>
+                              <Select defaultValue="course">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select content type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="course">Course</SelectItem>
+                                  <SelectItem value="test">Test</SelectItem>
+                                  <SelectItem value="challenge">Challenge</SelectItem>
+                                  <SelectItem value="video">Video</SelectItem>
+                                  <SelectItem value="article">Article</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor="target-persona">Target Persona</Label>
+                              <Select>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select target persona" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {personaTypes.map((persona, index) => (
+                                    <SelectItem key={index} value={persona.toLowerCase().replace(/\s/g, '-')}>
+                                      {persona}
+                                    </SelectItem>
+                                  ))}
+                                  <SelectItem value="all">All Personas</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="content-description">Description</Label>
+                            <Textarea 
+                              id="content-description" 
+                              placeholder="Provide a detailed description of this content"
+                              rows={4}
+                            />
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="estimated-duration">Estimated Duration (minutes)</Label>
+                              <Input id="estimated-duration" type="number" min="1" placeholder="e.g. 30" />
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor="difficulty-level">Difficulty Level</Label>
+                              <Select defaultValue="intermediate">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select difficulty" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="beginner">Beginner</SelectItem>
+                                  <SelectItem value="intermediate">Intermediate</SelectItem>
+                                  <SelectItem value="advanced">Advanced</SelectItem>
+                                  <SelectItem value="expert">Expert</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="content-tags">Tags (comma separated)</Label>
+                            <Input id="content-tags" placeholder="e.g. visual, marketing, design" />
+                          </div>
+                          
+                          <div className="flex justify-end">
+                            <Button variant="outline" className="mr-2">Save Draft</Button>
+                            <Button>Create Content</Button>
+                          </div>
+                        </form>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  
+                  <div>
+                    <Card className="mb-6">
+                      <CardHeader>
+                        <CardTitle>Content Types</CardTitle>
+                        <CardDescription>
+                          Available formats for learning content
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-start">
+                            <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mr-3">
+                              <BookOpen className="h-5 w-5 text-blue-500" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium">Courses</h3>
+                              <p className="text-sm text-muted-foreground">Comprehensive multi-section learning paths</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-start">
+                            <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mr-3">
+                              <ListChecks className="h-5 w-5 text-blue-500" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium">Tests</h3>
+                              <p className="text-sm text-muted-foreground">Knowledge assessments with scoring</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-start">
+                            <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mr-3">
+                              <Trophy className="h-5 w-5 text-blue-500" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium">Challenges</h3>
+                              <p className="text-sm text-muted-foreground">Interactive tasks to apply knowledge</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-start">
+                            <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mr-3">
+                              <School className="h-5 w-5 text-blue-500" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium">Videos</h3>
+                              <p className="text-sm text-muted-foreground">Visual learning content with captions</p>
                             </div>
                           </div>
                         </div>
-                      </TabsContent>
-                    ))}
-                  </Tabs>
-                </CardContent>
-              </Card>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Persona Targeting Tips</CardTitle>
+                        <CardDescription>
+                          Strategies for each learning persona
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="text-sm space-y-3">
+                        <p><span className="font-medium">Visual Learners:</span> Include diagrams, charts, and videos. Use color-coding and visual hierarchies.</p>
+                        <p><span className="font-medium">Auditory Learners:</span> Add narrated content, discussions, and verbal instructions. Minimize visual distractions.</p>
+                        <p><span className="font-medium">Kinesthetic Learners:</span> Incorporate interactive exercises, simulations, and hands-on activities.</p>
+                        <p><span className="font-medium">Reading/Writing:</span> Provide detailed written content with lists, definitions, and text-based assignments.</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </TabsContent>
 
-              {/* Learning Activity Trends */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Learning Activity Trends</CardTitle>
-                  <CardDescription>
-                    Weekly participation rates across different departments
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="h-[300px] relative">
-                  {/* Simplified chart visualization with CSS */}
-                  <div className="h-full flex items-end justify-between gap-4 px-4">
-                    {departments.map((dept, index) => (
-                      <div key={dept.id} className="flex flex-col items-center">
-                        <div className="flex flex-col-reverse w-14">
-                          {learningActivityTrends[dept.name].map((value, i) => (
-                            <div 
-                              key={i}
-                              className={`w-full h-2 my-0.5 rounded-sm ${
-                                index % 5 === 0 ? "bg-indigo-500" :
-                                index % 5 === 1 ? "bg-blue-500" :
-                                index % 5 === 2 ? "bg-green-500" :
-                                index % 5 === 3 ? "bg-amber-500" :
-                                "bg-purple-500"
-                              }`}
-                              style={{ opacity: 0.3 + (i * 0.1) }}
-                            ></div>
+              {/* Push Content Tab */}
+              <TabsContent value="push" className="space-y-8">
+                <div>
+                  <h1 className="text-3xl font-bold mb-2">Push Content</h1>
+                  <p className="text-muted-foreground">
+                    Assign learning resources to departments or specific personas
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Persona-Based Content Distribution</CardTitle>
+                        <CardDescription>
+                          Push suitable content to users matching specific personas
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <form className="space-y-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="content-select">Content to Push</Label>
+                              <Select>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select content" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {courseEffectiveness.map(course => (
+                                    <SelectItem key={course.id} value={course.id.toString()}>
+                                      {course.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor="audience-type">Target Audience Type</Label>
+                              <Select defaultValue="persona">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select audience type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="persona">By Persona</SelectItem>
+                                  <SelectItem value="department">By Department</SelectItem>
+                                  <SelectItem value="individual">Specific Individuals</SelectItem>
+                                  <SelectItem value="all">All Users</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="target-persona-push">Target Persona</Label>
+                              <Select>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select target persona" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {personaTypes.map((persona, index) => (
+                                    <SelectItem key={index} value={persona.toLowerCase().replace(/\s/g, '-')}>
+                                      {persona}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor="department-filter">Department Filter (Optional)</Label>
+                              <Select defaultValue="">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="All departments" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="">All Departments</SelectItem>
+                                  {departments.map(dept => (
+                                    <SelectItem key={dept.id} value={dept.id}>
+                                      {dept.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="push-message">Message (Optional)</Label>
+                            <Textarea 
+                              id="push-message" 
+                              placeholder="Add a custom message to accompany this content"
+                              rows={3}
+                            />
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="deadline">Completion Deadline</Label>
+                              <Input id="deadline" type="date" />
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor="priority">Priority Level</Label>
+                              <Select defaultValue="normal">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select priority" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="low">Low</SelectItem>
+                                  <SelectItem value="normal">Normal</SelectItem>
+                                  <SelectItem value="high">High</SelectItem>
+                                  <SelectItem value="urgent">Urgent</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <div className="flex items-center">
+                              <input
+                                type="checkbox"
+                                id="send-notification"
+                                className="h-4 w-4 mr-2"
+                                defaultChecked
+                              />
+                              <Label htmlFor="send-notification">Send notification to recipients</Label>
+                            </div>
+                          </div>
+                          
+                          <div className="flex justify-end">
+                            <Button variant="outline" className="mr-2">Schedule for Later</Button>
+                            <Button>Push Content Now</Button>
+                          </div>
+                        </form>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  
+                  <div>
+                    <Card className="mb-6">
+                      <CardHeader>
+                        <CardTitle>Recipients Preview</CardTitle>
+                        <CardDescription>
+                          Users who will receive this content
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-1 mb-4">
+                          <div className="text-sm font-medium">Estimated recipients:</div>
+                          <div className="text-3xl font-bold">24</div>
+                          <div className="text-xs text-muted-foreground">Based on your current selection</div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span>Engineering</span>
+                            <span>8 users</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span>Sales</span>
+                            <span>6 users</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span>Marketing</span>
+                            <span>4 users</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span>HR</span>
+                            <span>3 users</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span>Product</span>
+                            <span>3 users</span>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 pt-4 border-t">
+                          <div className="text-sm font-medium mb-2">Matching persona:</div>
+                          <div className="flex items-center">
+                            <div className="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                            <span>Visual Learner</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Recent Pushes</CardTitle>
+                        <CardDescription>
+                          Content recently distributed
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="text-sm">
+                        <div className="space-y-3">
+                          <div className="border-b pb-2">
+                            <div className="font-medium">Visual Learning Mastery</div>
+                            <div className="text-xs text-muted-foreground">Pushed 2 days ago • 35 recipients</div>
+                          </div>
+                          <div className="border-b pb-2">
+                            <div className="font-medium">Auditory Learning Techniques</div>
+                            <div className="text-xs text-muted-foreground">Pushed 5 days ago • 28 recipients</div>
+                          </div>
+                          <div className="">
+                            <div className="font-medium">Hands-on Workshop</div>
+                            <div className="text-xs text-muted-foreground">Pushed 1 week ago • 42 recipients</div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Monitor Results Tab */}
+              <TabsContent value="monitor" className="space-y-8">
+                <div>
+                  <h1 className="text-3xl font-bold mb-2">Monitor Assignments & Results</h1>
+                  <p className="text-muted-foreground">
+                    Track content distribution and learning performance across the organization
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-8">
+                  {/* Active Assignments */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <CardTitle>Active Assignments</CardTitle>
+                          <CardDescription>
+                            Track who has received content and completion status
+                          </CardDescription>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Filter className="h-3 w-3" />
+                            Filter
+                          </div>
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Download className="h-3 w-3" />
+                            Export
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b">
+                              <th className="text-left font-medium p-2">Assignment</th>
+                              <th className="text-left font-medium p-2">Department</th>
+                              <th className="text-left font-medium p-2">Target Persona</th>
+                              <th className="text-left font-medium p-2">Deadline</th>
+                              <th className="text-left font-medium p-2">Completion</th>
+                              <th className="text-left font-medium p-2">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {assignmentsData.map(assignment => (
+                              <tr key={assignment.id} className="border-b hover:bg-muted/50">
+                                <td className="p-2">
+                                  <div className="font-medium">{assignment.title}</div>
+                                </td>
+                                <td className="p-2">{assignment.assignedTo}</td>
+                                <td className="p-2">
+                                  <Badge variant="outline" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+                                    {assignment.targetPersona}
+                                  </Badge>
+                                </td>
+                                <td className="p-2">{new Date(assignment.deadline).toLocaleDateString()}</td>
+                                <td className="p-2">
+                                  <div className="flex items-center gap-2">
+                                    <Progress value={assignment.completionRate} className="h-2 w-24" />
+                                    <span>{assignment.completionRate}%</span>
+                                  </div>
+                                </td>
+                                <td className="p-2">
+                                  {assignment.status === "active" ? (
+                                    <Badge variant="outline" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+                                      Active
+                                    </Badge>
+                                  ) : (
+                                    <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-300 border-green-200 dark:border-green-800">
+                                      Completed
+                                    </Badge>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Performance Metrics */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Course Effectiveness</CardTitle>
+                        <CardDescription>
+                          Performance metrics for persona-targeted courses
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-6">
+                          {courseEffectiveness.map(course => (
+                            <div key={course.id} className="space-y-2">
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <div className="font-medium">{course.name}</div>
+                                  <div className="text-xs text-muted-foreground">For {course.recommendedFor}s</div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-sm font-medium">{course.averageRating}/5.0</div>
+                                  <div className="text-xs text-muted-foreground">{course.enrollment} enrolled</div>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Progress value={course.completionRate} className="h-2" />
+                                <span className="text-sm">{course.completionRate}%</span>
+                              </div>
+                            </div>
                           ))}
                         </div>
-                        <span className="text-xs mt-2 text-muted-foreground">{dept.name.substring(0, 3)}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="absolute bottom-12 left-0 right-0 flex justify-between px-10 border-t border-border pt-2">
-                    <span className="text-xs text-muted-foreground">Week 1</span>
-                    <span className="text-xs text-muted-foreground">Week 7</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <LineChart className="h-4 w-4 mr-1" />
-                    All departments show positive learning activity growth over the past 7 weeks
-                  </div>
-                </CardFooter>
-              </Card>
+                      </CardContent>
+                    </Card>
 
-              {/* User Activity Table */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Learner Activity</CardTitle>
-                  <CardDescription>
-                    Detailed view of individual learning progress
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <div className="inline-block min-w-full align-middle">
-                      <div className="p-1.5 min-w-full inline-block align-middle">
-                        <div className="overflow-hidden">
-                          <table className="min-w-full divide-y divide-border">
-                            <thead>
-                              <tr className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                                <th scope="col" className="px-4 py-3">Name</th>
-                                <th scope="col" className="px-4 py-3">Department</th>
-                                <th scope="col" className="px-4 py-3">Persona</th>
-                                <th scope="col" className="px-4 py-3">Courses</th>
-                                <th scope="col" className="px-4 py-3">Streak</th>
-                                <th scope="col" className="px-4 py-3">Status</th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-border">
-                              {filteredUserActivity.map((user) => (
-                                <tr key={user.id} className="hover:bg-muted/50">
-                                  <td className="px-4 py-3 whitespace-nowrap">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Learner Progress</CardTitle>
+                        <CardDescription>
+                          Individual performance summary
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          {userActivityData
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .slice(0, 6)
+                            .map(user => (
+                              <div key={user.id} className="flex items-center justify-between">
+                                <div className="flex items-center">
+                                  <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-700 dark:text-blue-300 font-medium mr-2 text-xs">
+                                    {user.name.split(' ').map(n => n[0]).join('')}
+                                  </div>
+                                  <div>
                                     <div className="text-sm font-medium">{user.name}</div>
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap">
-                                    <div className="text-sm">{user.department}</div>
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap">
-                                    <div className="text-sm">{user.persona}</div>
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap">
-                                    <div className="text-sm">{user.completedCourses}</div>
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap">
-                                    <div className="text-sm">{user.streakCount} days</div>
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap">
-                                    <span className={`px-2 py-1 text-xs rounded-full ${
-                                      user.activeToday ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300'
-                                    }`}>
-                                      {user.activeToday ? 'Active Today' : 'Inactive'}
-                                    </span>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                                    <div className="text-xs text-muted-foreground">{user.department}</div>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                  <div className="text-right">
+                                    <div className="text-sm font-medium">{user.completedCourses}</div>
+                                    <div className="text-xs text-muted-foreground">Courses</div>
+                                  </div>
+                                  <div>
+                                    {user.activeToday ? (
+                                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+                                    ) : (
+                                      <Clock className="h-5 w-5 text-amber-500" />
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          }
                         </div>
-                      </div>
-                    </div>
+                        <Button variant="outline" className="w-full mt-4 text-sm">
+                          View All Learners
+                        </Button>
+                      </CardContent>
+                    </Card>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-8">
-              {/* Quick Actions Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                  <CardDescription>Common L&D management tasks</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Button variant="outline" className="flex items-center justify-start gap-2 w-full">
-                    <Users className="h-4 w-4" />
-                    <span>View All Learners</span>
-                  </Button>
-                  <Button variant="outline" className="flex items-center justify-start gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    <span>Create New Course</span>
-                  </Button>
-                  <Button variant="outline" className="flex items-center justify-start gap-2 w-full">
-                    <LineChart className="h-4 w-4" />
-                    <span>Generate Full Report</span>
-                  </Button>
-                  <Button variant="outline" className="flex items-center justify-start gap-2 w-full">
-                    <Brain className="h-4 w-4" />
-                    <span>Persona Recommendations</span>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Course Effectiveness */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Course Effectiveness</CardTitle>
-                  <CardDescription>Performance metrics for active courses</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {courseEffectiveness.map((course) => (
-                      <div key={course.id} className="border rounded-lg p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-medium text-sm">{course.name}</h3>
-                          <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
-                            {course.recommendedFor}
-                          </span>
-                        </div>
-                        <div className="space-y-2 mt-3">
-                          <div className="flex justify-between items-center text-xs">
-                            <span className="text-muted-foreground">Enrollment</span>
-                            <span>{course.enrollment} learners</span>
-                          </div>
-                          <div className="flex justify-between items-center text-xs">
-                            <span className="text-muted-foreground">Completion Rate</span>
-                            <div className="flex items-center gap-2">
-                              <Progress value={course.completionRate} className="h-1.5 w-16" />
-                              <span>{course.completionRate}%</span>
-                            </div>
-                          </div>
-                          <div className="flex justify-between items-center text-xs">
-                            <span className="text-muted-foreground">Average Rating</span>
-                            <div className="flex items-center">
-                              <span>{course.averageRating}/5.0</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Visual Background with Sparkles */}
-              <div className="h-[200px] relative overflow-hidden rounded-lg shadow-sm">
-                <div className="absolute inset-0 z-0">
-                  <SparklesCore
-                    id="ld-sparkles"
-                    background="#0A1D56"
-                    minSize={0.6}
-                    maxSize={1.4}
-                    particleColor="#0EA5E9"
-                    particleDensity={70}
-                    className="w-full h-full"
-                    speed={0.8}
-                  />
                 </div>
-                <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-white">
-                  <h3 className="text-lg font-semibold mb-2 text-center">Need Custom L&D Analysis?</h3>
-                  <p className="text-sm opacity-90 text-center mb-4">Our team can provide detailed insights tailored to your specific needs</p>
-                  <Button variant="secondary" size="sm">Contact L&D Support</Button>
-                </div>
-              </div>
-            </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </main>
-
-      {/* Navigation Bar */}
-      <NavBar 
-        items={navItems}
-        className="lg:fixed lg:bottom-12 lg:mb-0"
-      />
     </div>
   );
 }
