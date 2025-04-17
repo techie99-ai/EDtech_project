@@ -629,80 +629,95 @@ function CourseCard({ course }: CourseCardProps) {
   };
 
   return (
-    <Card className="overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow">
-      <CardHeader className="pb-3 border-b">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-xl">{course.title}</CardTitle>
-          {course.rating && (
-            <div className="flex items-center gap-1 text-sm">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span>{course.rating}</span>
+    <div className="border rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
+      <div className="grid grid-cols-12 gap-0">
+        <div className="col-span-12 md:col-span-3 bg-gradient-to-br from-blue-500 to-indigo-600 h-40 md:h-full flex items-center justify-center p-4">
+          <div className="text-white text-center">
+            <div className="text-3xl font-bold mb-1">
+              {course.title.charAt(0)}
             </div>
-          )}
-        </div>
-        <CardDescription className="flex items-center gap-2">
-          {course.provider}
-          {course.isVerified && (
-            <Badge variant="outline" className="ml-1 text-xs bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800">
-              Verified
-            </Badge>
-          )}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="py-4 flex-1">
-        <p className="text-sm text-muted-foreground mb-4">
-          {course.description}
-        </p>
-        
-        {course.recommendedPersonas && course.recommendedPersonas.length > 0 && (
-          <div className="mb-3">
-            <p className="text-xs text-muted-foreground mb-1">Recommended for:</p>
-            <div className="flex flex-wrap gap-1">
-              {course.recommendedPersonas.map((persona, index) => (
-                <Badge 
-                  key={index} 
-                  variant="outline" 
-                  className={`text-xs ${getPersonaBadgeColor(persona)}`}
-                >
-                  {persona}
-                </Badge>
-              ))}
+            <div className="text-xs uppercase tracking-wider opacity-80">
+              {course.recommendedPersonas && course.recommendedPersonas[0] || "All Learners"}
             </div>
           </div>
-        )}
-        
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {course.tags?.map((tag, index) => (
-            <Badge key={index} variant="secondary" className="text-xs">
-              {tag}
-            </Badge>
-          ))}
         </div>
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <BarChart className="h-3.5 w-3.5" />
-            <span>{course.difficulty || "All Levels"}</span>
+        <div className="col-span-12 md:col-span-9 p-6">
+          <div className="flex flex-col h-full justify-between">
+            <div>
+              <div className="flex justify-between mb-2">
+                <h3 className="font-semibold text-lg">{course.title}</h3>
+                <div className="flex items-center gap-1">
+                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  <span className="text-sm font-medium">{course.rating || "4.8"}</span>
+                </div>
+              </div>
+              
+              {course.provider && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                  <span>{course.provider}</span>
+                  {course.isVerified && (
+                    <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800">
+                      Verified
+                    </Badge>
+                  )}
+                </div>
+              )}
+              
+              <p className="text-muted-foreground text-sm mb-3">{course.description}</p>
+              
+              {course.recommendedPersonas && course.recommendedPersonas.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-xs text-muted-foreground mb-1">Recommended for:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {course.recommendedPersonas.map((persona, index) => (
+                      <Badge 
+                        key={index} 
+                        variant="outline" 
+                        className={`text-xs ${getPersonaBadgeColor(persona)}`}
+                      >
+                        {persona}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex flex-wrap gap-2 mb-3">
+                {course.tags?.slice(0, 3).map((tag, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between pt-3 border-t mt-2">
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <BarChart className="h-4 w-4" />
+                  <span>{course.difficulty || "All Levels"}</span>
+                </div>
+                
+                <div className="flex items-center gap-1">
+                  <Clock className="h-4 w-4" />
+                  <span>{course.duration || "Self-paced"}</span>
+                </div>
+                
+                <span className="font-medium text-foreground">
+                  {course.price ? `$${course.price}` : "Free"}
+                </span>
+              </div>
+              
+              <Button 
+                size="sm"
+                onClick={() => window.open(course.url, '_blank')}
+              >
+                View Course
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <Clock className="h-3.5 w-3.5" />
-            <span>{course.duration || "Self-paced"}</span>
-          </div>
         </div>
-      </CardContent>
-      <CardFooter className="pt-3 border-t">
-        <div className="w-full flex justify-between items-center">
-          <span className="text-sm font-medium">
-            {course.price ? `$${course.price}` : "Free"}
-          </span>
-          <Button 
-            className="gap-1" 
-            onClick={() => window.open(course.url, '_blank')}
-          >
-            View Course
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 }
